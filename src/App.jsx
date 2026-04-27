@@ -720,7 +720,10 @@ export default function App() {
                       <input placeholder={tr.itemOptional} value={it.name} onChange={e => updateItem(idx,"name",e.target.value)} style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
                       <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2}}>
                         <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
-                        <input type="number" min={1} value={it.qty} onChange={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))} style={qStyle}/>
+                        <input type="number" min={1} value={it.qty}
+                        onChange={e => updateItem(idx,"qty",e.target.value)}
+                        onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))}
+                        style={qStyle}/>
                       </div>
                     </div>
                     <div style={{display:"flex",gap:6,marginBottom:6}}>
