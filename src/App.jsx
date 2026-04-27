@@ -669,7 +669,7 @@ export default function App() {
           <div>
             <Label>{tr.groupedView}</Label>
             <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
-              <Pill small active={!activeCatFilter} color="#fff" onClick={() => setActiveCatFilter(null)}>{tr.allBatches}</Pill>
+              <Pill small active={!activeCatFilter} color="#4ade80" onClick={() => setActiveCatFilter(null)}>{tr.allBatches}</Pill>
               {Object.keys(catStats).map(cat => (
                 <Pill key={cat} small active={activeCatFilter===cat} color="#a78bfa" onClick={() => setActiveCatFilter(activeCatFilter===cat?null:cat)}>{cat}</Pill>
               ))}
