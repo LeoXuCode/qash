@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 
-const FALLBACK_RATES = { NOK:1, USD:0.091, EUR:0.085, GBP:0.073, CNY:0.66, SEK:1.01, DKK:0.63, JPY:13.5, KRW:125 };
+const FALLBACK_RATES = { NOK:1, USD:0.108, EUR:0.090, GBP:0.079, CNY:0.728, SEK:0.99, DKK:0.69, JPY:16.98, KRW:158 };
 const SYM = { NOK:"kr", USD:"$", EUR:"€", GBP:"£", CNY:"¥", SEK:"kr", DKK:"kr", JPY:"¥", KRW:"₩" };
 
 async function fetchLiveRates() {
