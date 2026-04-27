@@ -897,8 +897,8 @@ export default function App() {
             <Label>{tr.language}</Label>
             <Card style={{marginBottom:16}}>
               <div style={{display:"flex",gap:8}}>
-                <Pill active={lang==="en"} color="#fff" onClick={() => setLang("en")}>English</Pill>
-                <Pill active={lang==="no"} color="#fff" onClick={() => setLang("no")}>Norsk</Pill>
+                <Pill active={lang==="en"} color="#4ade80" onClick={() => setLang("en")}>English</Pill>
+                <Pill active={lang==="no"} color="#4ade80" onClick={() => setLang("no")}>Norsk</Pill>
               </div>
             </Card>
             <Label>{tr.defaultCurrency}</Label>
