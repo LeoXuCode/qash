@@ -505,9 +505,15 @@ export default function App() {
   const sortedBatches = useMemo(() => [...batches].sort((a,b) => b.date.localeCompare(a.date)), [batches]);
   const batchProfit = useMemo(() => batches.filter(b => b.status==="sold").reduce((s,b) => s+batchTotals(b).profit, 0), [batches,tick]);
   const holdingValue = useMemo(() => batches.filter(b => b.status==="holding").reduce((s,b) => s+batchTotals(b).cost, 0), [batches,tick]);
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const monthBatches = batches.filter(b => b.status==="sold" && b.date.slice(0,7)===thisMonth);
+  const monthBatchProfit = monthBatches.reduce((s,b) => s+batchTotals(b).profit, 0);
+  const monthTxs = txs.filter(t => t.date.slice(0,7)===thisMonth);
   const txIncome  = txs.filter(t => t.type==="income").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
   const txExpense = txs.filter(t => t.type==="expense").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
-  const totalNet = batchProfit+txIncome-txExpense;
+  const monthIncome = monthTxs.filter(t => t.type==="income").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
+  const monthExpense = monthTxs.filter(t => t.type==="expense").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
+  const totalNet = monthBatchProfit+monthIncome-monthExpense;
   const annual = totalNet*12;
 
   const catStats = useMemo(() => {
@@ -635,7 +641,7 @@ export default function App() {
               </div>
             </Card>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
-              {[{l:tr.batchProfit,v:batchProfit,c:"#4ade80"},{l:tr.otherIncome,v:txIncome,c:"#60a5fa"},{l:tr.expenses,v:txExpense,c:"#f87171"}].map(x => (
+              {[{l:tr.batchProfit,v:monthBatchProfit,c:"#4ade80"},{l:tr.otherIncome,v:monthIncome,c:"#60a5fa"},{l:tr.expenses,v:monthExpense,c:"#f87171"}].map(x => (
                 <Card key={x.l} style={{padding:"14px 12px"}}>
                   <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{x.l}</div>
                   <div style={{fontSize:15,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:x.c}}>{fmtK(x.v)}</div>
