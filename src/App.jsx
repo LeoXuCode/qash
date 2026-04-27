@@ -116,7 +116,7 @@ const T = {
     categories:"Kategorier", manageCategories:"Administrer batch-kategorier",
     addCategory:"+ Ny kategori", categoryName:"Kategorinavn", noCat:"Ingen kategori",
     groupedView:"Kategori-oversikt", allBatches:"Alle", totalProfit:"Total profitt",
-    batches:"batches", home:"Hjem", forecast:"Prognose", calculator:"Tools",
+    batches:"batches", home:"Hjem", forecast:"Prognose", calculator:"Verktøy",
     itemOptional:"Produktnavn (valgfritt)",
     profitCalc:"Profitt", currencyConv:"Valuta", roiCalc:"ROI", breakEven:"Break-even", basicCalc:"Kalkulator",
     buyPrice:"Kjøpspris", sellPrice:"Salgspris", fees:"Avgifter / frakt",
