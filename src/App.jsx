@@ -611,7 +611,7 @@ export default function App() {
               {ratesLoaded && <span style={{marginLeft:8,fontSize:9,color:"#4ade8066"}}>● live rates</span>}
             </div>
           </div>
-          <button onClick={() => setTab(4)} style={{background:"none",border:"none",cursor:"pointer",color:tab===4?"#fff":"#555",fontSize:20,lineHeight:1,padding:0,margin:0,display:"block",transform:"translateY(-3px)"}}>&#9881;&#xFE0E;</button>
+          <button onClick={() => setTab(4)} style={{background:tab===4?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",border:"none",cursor:"pointer",color:tab===4?"#fff":"#aaa",fontSize:12,fontWeight:600,fontFamily:"inherit",padding:"6px 14px",borderRadius:99}}>Settings</button>
         </div>
       </div>
 
