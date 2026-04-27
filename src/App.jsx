@@ -713,36 +713,27 @@ export default function App() {
                 {batchForm.items.map((it,idx) => (
                   <div key={it.id} style={{padding:"12px",marginBottom:8,borderRadius:12,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.05)"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                      <div style={{fontSize:11,color:"#555",fontWeight:600}}>{batchForm.items.length===1?tr.batchName:tr.itemLabel+" "+(idx+1)}</div>
+                      <div style={{fontSize:11,color:"#555",fontWeight:600}}>{batchForm.items.length===1 ? tr.batchName : tr.itemLabel+" "+(idx+1)}</div>
                       {batchForm.items.length>1 && <button onClick={() => removeItem(idx)} style={{background:"none",border:"none",color:"#f8717188",fontSize:18,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>}
                     </div>
-                    {batchForm.items.length===1 ? (
-                      <input placeholder={tr.batchName} value={batchForm.name}
-                        onChange={e => setBatchForm(f => ({...f,name:e.target.value}))}
-                        style={{...iStyle,marginBottom:6,fontSize:13,padding:"10px 12px"}}/>
-                    ) : (
-                      <div style={{display:"flex",gap:6,marginBottom:6}}>
-                        <input placeholder={tr.itemOptional} value={it.name} onChange={e => updateItem(idx,"name",e.target.value)} style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2}}>
-                          <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
-                          <input type="number" min={1} value={it.qty}
-                            onChange={e => updateItem(idx,"qty",e.target.value)}
-                            onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))}
-                            style={qStyle}/>
-                        </div>
+                    <div style={{display:"flex",gap:6,marginBottom:6}}>
+                      {batchForm.items.length===1 ? (
+                        <input placeholder={tr.batchName} value={batchForm.name}
+                          onChange={e => setBatchForm(f => ({...f,name:e.target.value}))}
+                          style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
+                      ) : (
+                        <input placeholder={tr.itemOptional} value={it.name}
+                          onChange={e => updateItem(idx,"name",e.target.value)}
+                          style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
+                      )}
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2}}>
+                        <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
+                        <input type="number" min={1} value={it.qty}
+                          onChange={e => updateItem(idx,"qty",e.target.value)}
+                          onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))}
+                          style={qStyle}/>
                       </div>
-                    )}
-                    {batchForm.items.length>1 && (
-                      <div style={{display:"flex",gap:6,marginBottom:6}}>
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2}}>
-                          <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
-                          <input type="number" min={1} value={it.qty}
-                            onChange={e => updateItem(idx,"qty",e.target.value)}
-                            onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))}
-                            style={qStyle}/>
-                        </div>
-                      </div>
-                    )}
+                    </div>
                     <div style={{display:"flex",gap:6,marginBottom:6}}>
                       <input placeholder={tr.buyPerUnit} value={it.buyCost}
                         onChange={e => updateItem(idx,"buyCost",e.target.value)}
@@ -765,6 +756,16 @@ export default function App() {
                     )}
                   </div>
                 ))}
+                {batchForm.items.some(it=>it.buyCost) && (
+                  <div style={{padding:"10px 14px",borderRadius:10,marginBottom:8,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",fontSize:12}}>
+                    <span style={{color:"#888"}}>Cost: {fmt(batchForm.items.reduce((s,it)=>s+toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0))} kr</span>
+                    {batchForm.status==="sold" && (
+                      <span style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:batchForm.items.reduce((s,it)=>s+toNOK((+it.sellPrice||0)*(+it.qty||1),it.sellCur)-toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0)>=0?"#4ade80":"#f87171"}}>
+                        {fmt(batchForm.items.reduce((s,it)=>s+toNOK((+it.sellPrice||0)*(+it.qty||1),it.sellCur)-toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0))} kr profit
+                      </span>
+                    )}
+                  </div>
+                )}
                 <button onClick={addItem} style={{width:"100%",padding:"10px",border:"1px dashed rgba(255,255,255,0.12)",borderRadius:10,background:"none",color:"#888",fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:500,marginBottom:12}}>{tr.addItem}</button>
                 <button onClick={submitBatch} style={{width:"100%",padding:"14px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.addBatch}</button>
               </Card>
