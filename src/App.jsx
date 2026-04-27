@@ -490,6 +490,7 @@ export default function App() {
   const [sellingBatch, setSellingBatch] = useState(null);
   const [sellPrices, setSellPrices] = useState({});
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [showHolding, setShowHolding] = useState(false);
 
   useEffect(() => {
     fetchLiveRates()
@@ -776,7 +777,25 @@ export default function App() {
                 <button onClick={submitBatch} style={{width:"100%",padding:"14px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.addBatch}</button>
               </Card>
             )}
-            {(activeCatFilter?sortedBatches.filter(b => (b.category||tr.noCat)===activeCatFilter):sortedBatches).map(b => <BatchCard key={b.id} b={b} {...batchProps}/>)}
+            {(() => {
+              const filtered = activeCatFilter ? sortedBatches.filter(b => (b.category||tr.noCat)===activeCatFilter) : sortedBatches;
+              const holding = filtered.filter(b => b.status==="holding");
+              const sold = filtered.filter(b => b.status==="sold");
+              return (
+                <>
+                  {holding.length>0 && (
+                    <div style={{marginBottom:16}}>
+                      <button onClick={() => setShowHolding(p=>!p)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:14,padding:"12px 16px",cursor:"pointer",fontFamily:"inherit",marginBottom:showHolding?8:0}}>
+                        <span style={{fontSize:12,fontWeight:600,color:"#fbbf24"}}>Holding · {holding.length} batch{holding.length>1?"es":""}</span>
+                        <span style={{fontSize:12,color:"#fbbf24"}}>{showHolding?"▲":"▼"}</span>
+                      </button>
+                      {showHolding && holding.map(b => <BatchCard key={b.id} b={b} {...batchProps}/>)}
+                    </div>
+                  )}
+                  {sold.map(b => <BatchCard key={b.id} b={b} {...batchProps}/>)}
+                </>
+              );
+            })()}
             <div style={{margin:"20px 0 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <Label>{tr.otherTx}</Label>
               <button onClick={() => { setShowAddTx(!showAddTx); setShowAddBatch(false); }} style={{padding:"6px 14px",border:"none",borderRadius:99,cursor:"pointer",background:"rgba(255,255,255,0.06)",color:"#aaa",fontSize:11,fontWeight:600,fontFamily:"inherit"}}>
