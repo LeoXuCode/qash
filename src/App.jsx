@@ -599,7 +599,7 @@ export default function App() {
   );
 
   return (
-    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'DM Sans',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden"}}>
+    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'DM Sans',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden",paddingTop:"env(safe-area-inset-top)"}}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
       <div style={{padding:"24px 20px 16px"}}>
