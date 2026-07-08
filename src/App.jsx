@@ -487,7 +487,7 @@ export default function App() {
   const [showAddBatch, setShowAddBatch] = useState(false);
   const [batchForm, setBatchForm] = useState({name:"",status:"sold",category:"",items:[emptyItem("NOK")]});
   const [showAddTx, setShowAddTx] = useState(false);
-  const [txForm, setTxForm] = useState({type:"income",desc:"",amount:"",cur:"NOK",cat:"Work"});
+  const [txForm, setTxForm] = useState({type:"income",desc:"",amount:"",cur:"NOK",cat:"Work",date:new Date().toISOString().slice(0,10)});
   const [expanded, setExpanded] = useState(null);
   const [sellingBatch, setSellingBatch] = useState(null);
   const [sellPrices, setSellPrices] = useState({});
@@ -550,8 +550,8 @@ export default function App() {
 
   const addTx = () => {
     if (!txForm.desc||!txForm.amount) return;
-    setTxs(p => [...p, {...txForm, id:Date.now(), amount:+txForm.amount, date:new Date().toISOString().slice(0,10)}]);
-    setTxForm({type:"income",desc:"",amount:"",cur:defaultCur,cat:"Work"});
+    setTxs(p => [...p, {...txForm, id:Date.now(), amount:+txForm.amount}]);
+    setTxForm({type:"income",desc:"",amount:"",cur:defaultCur,cat:"Work",date:new Date().toISOString().slice(0,10)});
     setShowAddTx(false);
   };
 
@@ -819,9 +819,10 @@ export default function App() {
                     {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                   </select>
                 </div>
-                <select value={txForm.cat} onChange={e => setTxForm(f => ({...f,cat:e.target.value}))} style={{...sStyle,marginBottom:10}}>
+                <select value={txForm.cat} onChange={e => setTxForm(f => ({...f,cat:e.target.value}))} style={{...sStyle,marginBottom:8}}>
                   {["Work","Freelance","Investment","Personal","Other"].map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                 </select>
+                <input type="date" value={txForm.date} onChange={e => setTxForm(f => ({...f,date:e.target.value}))} style={{...iStyle,marginBottom:10}}/>
                 <button onClick={addTx} style={{width:"100%",padding:"15px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.add.replace("+ ","")}</button>
               </Card>
             )}
