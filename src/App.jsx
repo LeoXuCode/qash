@@ -502,6 +502,12 @@ export default function App() {
       .catch(() => setRatesLoaded(false));
   }, []);
 
+  useEffect(() => {
+    if (showAddBatch) {
+      setBatchForm(f => ({...f, category: activeCatFilter || batches[batches.length - 1]?.category || ""}));
+    }
+  }, [showAddBatch, activeCatFilter, batches]);
+
   useEffect(() => { try { localStorage.setItem("qash_batches", JSON.stringify(batches)); } catch(e) {} }, [batches]);
   useEffect(() => { try { localStorage.setItem("qash_txs", JSON.stringify(txs)); } catch(e) {} }, [txs]);
   useEffect(() => { try { localStorage.setItem("qash_categories", JSON.stringify(categories)); } catch(e) {} }, [categories]);
