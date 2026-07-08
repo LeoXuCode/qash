@@ -150,14 +150,14 @@ function batchTotals(b) {
 }
 
 const iStyle = {
-  width:"100%", padding:"12px 14px", background:"rgba(255,255,255,0.05)",
+  width:"100%", padding:"15px 16px", background:"rgba(255,255,255,0.05)",
   border:"1px solid rgba(255,255,255,0.08)", borderRadius:12, color:"#e8e8e8",
-  fontSize:15, fontFamily:"inherit", outline:"none", boxSizing:"border-box",
+  fontSize:17, fontFamily:"inherit", outline:"none", boxSizing:"border-box",
 };
 const sStyle = {...iStyle, appearance:"none"};
 const qStyle = {
-  padding:"6px 8px", background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.1)",
-  borderRadius:8, color:"#e8e8e8", fontSize:13, fontFamily:"inherit", outline:"none", width:52, textAlign:"center",
+  padding:"10px 8px", background:"rgba(255,255,255,0.07)", border:"1px solid rgba(255,255,255,0.1)",
+  borderRadius:8, color:"#e8e8e8", fontSize:15, fontFamily:"inherit", outline:"none", width:60, textAlign:"center",
 };
 
 const Card = ({children, style={}}) => (
@@ -166,31 +166,31 @@ const Card = ({children, style={}}) => (
   </div>
 );
 const Label = ({children}) => (
-  <div style={{fontSize:10,color:"#666",textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,fontWeight:600}}>{children}</div>
+  <div style={{fontSize:12,color:"#777",textTransform:"uppercase",letterSpacing:1.3,marginBottom:9,fontWeight:600}}>{children}</div>
 );
 const Pill = ({active, color, children, onClick, small}) => (
   <button onClick={onClick} style={{
-    padding:small?"6px 12px":"8px 16px", borderRadius:99, cursor:"pointer", fontFamily:"inherit",
-    fontSize:small?12:13, fontWeight:600, transition:"all 0.2s",
+    padding:small?"9px 15px":"12px 20px", borderRadius:99, cursor:"pointer", fontFamily:"inherit",
+    fontSize:small?14:15, fontWeight:600, transition:"all 0.2s", minHeight:small?38:44,
     background:active?(color+"20"):"rgba(255,255,255,0.04)",
-    color:active?color:"#555",
+    color:active?color:"#666",
     border:active?("1px solid "+color+"40"):"1px solid transparent",
   }}>{children}</button>
 );
 const CalcInput = ({label, value, onChange, suffix}) => (
-  <div style={{marginBottom:12}}>
-    <div style={{fontSize:10,color:"#666",textTransform:"uppercase",letterSpacing:1,marginBottom:6,fontWeight:600}}>{label}</div>
+  <div style={{marginBottom:14}}>
+    <div style={{fontSize:12,color:"#777",textTransform:"uppercase",letterSpacing:1,marginBottom:7,fontWeight:600}}>{label}</div>
     <div style={{position:"relative",display:"flex",alignItems:"center"}}>
       <input type="number" value={value} onChange={e => onChange(e.target.value)}
-        style={{...iStyle, paddingRight:suffix?40:14}}/>
-      {suffix && <span style={{position:"absolute",right:14,color:"#666",fontSize:12}}>{suffix}</span>}
+        style={{...iStyle, paddingRight:suffix?44:16}}/>
+      {suffix && <span style={{position:"absolute",right:16,color:"#777",fontSize:14}}>{suffix}</span>}
     </div>
   </div>
 );
 const ResRow = ({label, value, color}) => (
-  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
-    <span style={{fontSize:12,color:"#888"}}>{label}</span>
-    <span style={{fontSize:16,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:color||"#4ade80"}}>{value}</span>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+    <span style={{fontSize:14,color:"#999"}}>{label}</span>
+    <span style={{fontSize:18,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:color||"#4ade80"}}>{value}</span>
   </div>
 );
 
@@ -231,20 +231,20 @@ function BasicCalc() {
 
   return (
     <div style={{borderRadius:20,overflow:"hidden",border:"1px solid rgba(255,255,255,0.06)"}}>
-      <div style={{background:"rgba(255,255,255,0.035)",padding:"24px 20px 16px",textAlign:"right"}}>
-        <div style={{fontSize:12,color:"#555",minHeight:18,fontFamily:"'JetBrains Mono',monospace",marginBottom:4,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{expr||" "}</div>
-        <div style={{fontSize:40,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#e8e8e8",lineHeight:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{display}</div>
+      <div style={{background:"rgba(255,255,255,0.035)",padding:"26px 20px 18px",textAlign:"right"}}>
+        <div style={{fontSize:14,color:"#666",minHeight:20,fontFamily:"'JetBrains Mono',monospace",marginBottom:4,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{expr||" "}</div>
+        <div style={{fontSize:44,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#e8e8e8",lineHeight:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{display}</div>
       </div>
-      <div style={{background:"rgba(255,255,255,0.025)",padding:"12px",display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{background:"rgba(255,255,255,0.025)",padding:"12px",display:"flex",flexDirection:"column",gap:9}}>
         {ROWS.map((row, ri) => (
-          <div key={ri} style={{display:"grid",gridTemplateColumns:row.some(b => b.wide)?"2fr 1fr 1fr":"1fr 1fr 1fr 1fr",gap:8}}>
+          <div key={ri} style={{display:"grid",gridTemplateColumns:row.some(b => b.wide)?"2fr 1fr 1fr":"1fr 1fr 1fr 1fr",gap:9}}>
             {row.map((btn, bi) => {
               const t = btn.t || "num";
               return (
                 <button key={bi} onClick={() => press(btn.l)} style={{
-                  padding:"18px 0", borderRadius:14, border:"none", cursor:"pointer",
+                  padding:"22px 0", borderRadius:14, border:"none", cursor:"pointer",
                   fontFamily:"'JetBrains Mono',monospace", fontWeight:700,
-                  fontSize:t==="op"?20:t==="eq"?22:18,
+                  fontSize:t==="op"?22:t==="eq"?24:20,
                   background:t==="op"?"rgba(167,139,250,0.15)":t==="eq"?"#4ade80":t==="del"?"rgba(248,113,113,0.12)":"rgba(255,255,255,0.06)",
                   color:t==="op"?"#a78bfa":t==="eq"?"#000":t==="del"?"#f87171":"#e8e8e8",
                   gridColumn:btn.wide?"span 2":"span 1",
@@ -312,7 +312,7 @@ function ToolsPage({tr}) {
                 {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
               </select>
             </div>
-            <div style={{display:"flex",alignItems:"center",paddingTop:28,color:"#555",fontSize:20}}>→</div>
+            <div style={{display:"flex",alignItems:"center",paddingTop:28,color:"#666",fontSize:22}}>→</div>
             <div style={{flex:1}}>
               <Label>{tr.to}</Label>
               <select value={cTo} onChange={e => setCTo(e.target.value)} style={sStyle}>
@@ -322,10 +322,10 @@ function ToolsPage({tr}) {
           </div>
           {+cAmt>0 && (
             <div style={{padding:"20px",borderRadius:14,textAlign:"center",background:"rgba(74,222,128,0.06)",border:"1px solid rgba(74,222,128,0.12)"}}>
-              <div style={{fontSize:13,color:"#666",marginBottom:8}}>{fmt2(+cAmt)} {cFrom}</div>
-              <div style={{fontSize:11,color:"#555",marginBottom:4}}>↓</div>
-              <div style={{fontSize:32,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#4ade80"}}>{fmt2(cRes)} {SYM[cTo]}</div>
-              {cFrom!=="NOK"&&cTo!=="NOK" && <div style={{fontSize:11,color:"#555",marginTop:8}}>via NOK: {fmt2(cNok)} kr</div>}
+              <div style={{fontSize:14.5,color:"#777",marginBottom:9}}>{fmt2(+cAmt)} {cFrom}</div>
+              <div style={{fontSize:12.5,color:"#666",marginBottom:5}}>↓</div>
+              <div style={{fontSize:34,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#4ade80"}}>{fmt2(cRes)} {SYM[cTo]}</div>
+              {cFrom!=="NOK"&&cTo!=="NOK" && <div style={{fontSize:12.5,color:"#666",marginTop:9}}>via NOK: {fmt2(cNok)} kr</div>}
             </div>
           )}
         </Card>
@@ -343,8 +343,8 @@ function ToolsPage({tr}) {
           )}
           {+rInv>0&&+rRet>0 && (
             <div style={{marginTop:16,padding:"16px",borderRadius:14,textAlign:"center",background:rRoi>=0?"rgba(74,222,128,0.06)":"rgba(248,113,113,0.06)",border:"1px solid "+(rRoi>=0?"rgba(74,222,128,0.12)":"rgba(248,113,113,0.12)")}}>
-              <div style={{fontSize:40,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:rRoi>=0?"#4ade80":"#f87171"}}>{fmt2(rRoi)}%</div>
-              <div style={{fontSize:11,color:"#666",marginTop:4}}>ROI</div>
+              <div style={{fontSize:42,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:rRoi>=0?"#4ade80":"#f87171"}}>{fmt2(rRoi)}%</div>
+              <div style={{fontSize:12.5,color:"#777",marginTop:5}}>ROI</div>
             </div>
           )}
         </Card>
@@ -357,13 +357,13 @@ function ToolsPage({tr}) {
           <CalcInput label={tr.pricePerUnit} value={bPrc} onChange={setBPrc} suffix="kr"/>
           {bUnits!==null&&+bFix>0 && (
             <div style={{marginTop:16,padding:"20px",borderRadius:14,textAlign:"center",background:"rgba(96,165,250,0.06)",border:"1px solid rgba(96,165,250,0.12)"}}>
-              <div style={{fontSize:11,color:"#666",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>{tr.unitsNeeded}</div>
-              <div style={{fontSize:56,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#60a5fa",lineHeight:1}}>{bUnits}</div>
-              <div style={{fontSize:11,color:"#555",marginTop:8}}>= {fmt2(bUnits*(+bPrc))} kr revenue</div>
+              <div style={{fontSize:12.5,color:"#777",marginBottom:9,textTransform:"uppercase",letterSpacing:1}}>{tr.unitsNeeded}</div>
+              <div style={{fontSize:58,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#60a5fa",lineHeight:1}}>{bUnits}</div>
+              <div style={{fontSize:12.5,color:"#666",marginTop:9}}>= {fmt2(bUnits*(+bPrc))} kr revenue</div>
             </div>
           )}
           {+bPrc>0&&+bVar>0&&+bPrc<=+bVar && (
-            <div style={{marginTop:12,padding:"12px",borderRadius:12,background:"rgba(248,113,113,0.08)",border:"1px solid rgba(248,113,113,0.15)",fontSize:12,color:"#f87171",textAlign:"center"}}>
+            <div style={{marginTop:12,padding:"13px",borderRadius:12,background:"rgba(248,113,113,0.08)",border:"1px solid rgba(248,113,113,0.15)",fontSize:13.5,color:"#f87171",textAlign:"center"}}>
               Price must be higher than variable cost
             </div>
           )}
@@ -378,48 +378,48 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
   const isExp = expanded===b.id;
   const isSelling = sellingId===b.id;
   return (
-    <div style={{background:"rgba(255,255,255,0.035)",borderRadius:20,padding:"16px",border:"1px solid rgba(255,255,255,0.06)",marginBottom:10,cursor:"pointer"}}
+    <div style={{background:"rgba(255,255,255,0.035)",borderRadius:20,padding:"18px",border:"1px solid rgba(255,255,255,0.06)",marginBottom:10,cursor:"pointer"}}
       onClick={() => onExpand(b.id)}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
         <div style={{flex:1}}>
-          <div style={{fontSize:14,fontWeight:600}}>{b.name}</div>
-          <div style={{fontSize:11,color:"#555",marginTop:3,display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
+          <div style={{fontSize:16,fontWeight:600}}>{b.name}</div>
+          <div style={{fontSize:12.5,color:"#666",marginTop:4,display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
             <span>{b.items.reduce((s,it) => s+it.qty, 0)} {tr.units} · {b.date}</span>
-            {b.category && <span style={{padding:"2px 8px",borderRadius:99,fontSize:10,background:"rgba(167,139,250,0.12)",color:"#a78bfa",border:"1px solid rgba(167,139,250,0.2)"}}>{b.category}</span>}
-            <span style={{color:"#444"}}>{isExp?"▲":"▼"}</span>
+            {b.category && <span style={{padding:"3px 9px",borderRadius:99,fontSize:11.5,background:"rgba(167,139,250,0.12)",color:"#a78bfa",border:"1px solid rgba(167,139,250,0.2)"}}>{b.category}</span>}
+            <span style={{color:"#555"}}>{isExp?"▲":"▼"}</span>
           </div>
         </div>
         {b.status==="sold" ? (
           <div style={{textAlign:"right"}}>
-            <div style={{fontSize:16,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totals.profit>=0?"#4ade80":"#f87171"}}>{totals.profit>=0?"+":""}{fmt(totals.profit)} kr</div>
-            <div style={{fontSize:10,color:totals.profit>=0?"#4ade8088":"#f8717188",marginTop:2}}>{totals.margin}% margin</div>
+            <div style={{fontSize:18,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totals.profit>=0?"#4ade80":"#f87171"}}>{totals.profit>=0?"+":""}{fmt(totals.profit)} kr</div>
+            <div style={{fontSize:11.5,color:totals.profit>=0?"#4ade8088":"#f8717188",marginTop:3}}>{totals.margin}% margin</div>
           </div>
         ) : (
-          <div style={{padding:"4px 10px",borderRadius:99,fontSize:11,fontWeight:600,background:"#fbbf2418",color:"#fbbf24",border:"1px solid #fbbf2430"}}>{tr.holding} · {fmt(totals.cost)} kr</div>
+          <div style={{padding:"6px 12px",borderRadius:99,fontSize:12.5,fontWeight:600,background:"#fbbf2418",color:"#fbbf24",border:"1px solid #fbbf2430"}}>{tr.holding} · {fmt(totals.cost)} kr</div>
         )}
       </div>
       {isExp && (
-        <div style={{marginTop:14,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.06)"}} onClick={e => e.stopPropagation()}>
+        <div style={{marginTop:16,paddingTop:14,borderTop:"1px solid rgba(255,255,255,0.06)"}} onClick={e => e.stopPropagation()}>
           {isSelling && (
-            <div style={{padding:"12px",marginBottom:12,borderRadius:12,background:"rgba(74,222,128,0.06)",border:"1px solid rgba(74,222,128,0.15)"}}>
-              <div style={{fontSize:11,color:"#4ade80",fontWeight:600,marginBottom:10,textTransform:"uppercase",letterSpacing:1}}>{tr.enterSellPrices}</div>
+            <div style={{padding:"14px",marginBottom:14,borderRadius:12,background:"rgba(74,222,128,0.06)",border:"1px solid rgba(74,222,128,0.15)"}}>
+              <div style={{fontSize:12.5,color:"#4ade80",fontWeight:600,marginBottom:12,textTransform:"uppercase",letterSpacing:1}}>{tr.enterSellPrices}</div>
               {b.items.map((it,i) => (
-                <div key={i} style={{marginBottom:8}}>
-                  <div style={{fontSize:12,color:"#999",marginBottom:4}}>{it.name||(tr.itemLabel+" "+(i+1))}{it.qty>1?" (×"+it.qty+")":""}</div>
+                <div key={i} style={{marginBottom:10}}>
+                  <div style={{fontSize:13.5,color:"#aaa",marginBottom:5}}>{it.name||(tr.itemLabel+" "+(i+1))}{it.qty>1?" (×"+it.qty+")":""}</div>
                   <div style={{display:"flex",gap:6}}>
                     <input type="number" placeholder={tr.sellPerUnitLbl} value={(sellPrices[i]&&sellPrices[i].sellPrice)||""}
                       onChange={e => onSellPriceChange(i,"sellPrice",e.target.value)}
-                      style={{...iStyle,flex:2,fontSize:13,padding:"10px 12px"}}/>
+                      style={{...iStyle,flex:2,fontSize:15,padding:"12px 14px"}}/>
                     <select value={(sellPrices[i]&&sellPrices[i].sellCur)||"NOK"} onChange={e => onSellPriceChange(i,"sellCur",e.target.value)}
-                      style={{...sStyle,flex:1,fontSize:13,padding:"10px 8px"}}>
+                      style={{...sStyle,flex:1,fontSize:15,padding:"12px 10px"}}>
                       {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                     </select>
                   </div>
                 </div>
               ))}
-              <div style={{display:"flex",gap:8,marginTop:10}}>
-                <button onClick={onCancelSell} style={{flex:1,padding:"10px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#888",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>{tr.cancel}</button>
-                <button onClick={() => onConfirmSell(b.id)} style={{flex:1,padding:"10px",border:"none",borderRadius:10,background:"#4ade80",color:"#000",fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>{tr.confirmSale}</button>
+              <div style={{display:"flex",gap:8,marginTop:12}}>
+                <button onClick={onCancelSell} style={{flex:1,padding:"13px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#999",fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>{tr.cancel}</button>
+                <button onClick={() => onConfirmSell(b.id)} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"#4ade80",color:"#000",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>{tr.confirmSale}</button>
               </div>
             </div>
           )}
@@ -427,35 +427,35 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
             const iCost = toNOK(it.buyCost*it.qty,it.buyCur);
             const iRev  = toNOK(it.sellPrice*it.qty,it.sellCur);
             return (
-              <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:i<b.items.length-1?"1px solid rgba(255,255,255,0.03)":"none"}}>
+              <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<b.items.length-1?"1px solid rgba(255,255,255,0.03)":"none"}}>
                 <div>
-                  <div style={{fontSize:12,color:"#bbb"}}>{it.name||(tr.itemLabel+" "+(i+1))}{it.qty>1?" ×"+it.qty:""}</div>
-                  <div style={{fontSize:10,color:"#444",marginTop:1}}>{fmt(it.buyCost)} {SYM[it.buyCur]}/unit{b.status==="sold"?" · "+fmt(it.sellPrice)+" "+SYM[it.sellCur]+"/unit":""}</div>
+                  <div style={{fontSize:14,color:"#ccc"}}>{it.name||(tr.itemLabel+" "+(i+1))}{it.qty>1?" ×"+it.qty:""}</div>
+                  <div style={{fontSize:11.5,color:"#555",marginTop:2}}>{fmt(it.buyCost)} {SYM[it.buyCur]}/unit{b.status==="sold"?" · "+fmt(it.sellPrice)+" "+SYM[it.sellCur]+"/unit":""}</div>
                 </div>
                 {b.status==="sold" && (
-                  <div style={{fontSize:12,fontFamily:"'JetBrains Mono',monospace",fontWeight:600,color:(iRev-iCost)>=0?"#4ade80":"#f87171"}}>{(iRev-iCost)>=0?"+":""}{fmt(iRev-iCost)} kr</div>
+                  <div style={{fontSize:14,fontFamily:"'JetBrains Mono',monospace",fontWeight:600,color:(iRev-iCost)>=0?"#4ade80":"#f87171"}}>{(iRev-iCost)>=0?"+":""}{fmt(iRev-iCost)} kr</div>
                 )}
               </div>
             );
           })}
           {!isSelling && (
-            <div style={{display:"flex",justifyContent:"space-between",marginTop:10,paddingTop:8,borderTop:"1px solid rgba(255,255,255,0.06)",fontSize:11,color:"#888"}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:12,paddingTop:10,borderTop:"1px solid rgba(255,255,255,0.06)",fontSize:12.5,color:"#999"}}>
               <span>{tr.totalCost}: {fmt(totals.cost)} kr</span>
               {b.status==="sold" && <span>{tr.revenue}: {fmt(totals.rev)} kr</span>}
             </div>
           )}
           {!isSelling && (
-            <div style={{display:"flex",gap:8,marginTop:12}}>
+            <div style={{display:"flex",gap:8,marginTop:14}}>
               {b.status==="holding" && (
-                <button onClick={() => onStartSell(b)} style={{flex:1,padding:"10px",border:"none",borderRadius:10,background:"rgba(74,222,128,0.12)",color:"#4ade80",fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.markSold}</button>
+                <button onClick={() => onStartSell(b)} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"rgba(74,222,128,0.12)",color:"#4ade80",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.markSold}</button>
               )}
               {confirmDelete===("batch-"+b.id) ? (
                 <div style={{flex:1,display:"flex",gap:6}}>
-                  <button onClick={onCancelDelete} style={{flex:1,padding:"10px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#888",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>{tr.keep}</button>
-                  <button onClick={() => onDelete(b.id)} style={{flex:1,padding:"10px",border:"none",borderRadius:10,background:"rgba(248,113,113,0.2)",color:"#f87171",fontSize:11,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.delete}</button>
+                  <button onClick={onCancelDelete} style={{flex:1,padding:"13px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#999",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>{tr.keep}</button>
+                  <button onClick={() => onDelete(b.id)} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"rgba(248,113,113,0.2)",color:"#f87171",fontSize:13,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.delete}</button>
                 </div>
               ) : (
-                <button onClick={() => onConfirmDelete("batch-"+b.id)} style={{padding:"10px 16px",border:"none",borderRadius:10,background:"rgba(255,255,255,0.04)",color:"#555",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>{tr.delete}</button>
+                <button onClick={() => onConfirmDelete("batch-"+b.id)} style={{padding:"13px 18px",border:"none",borderRadius:10,background:"rgba(255,255,255,0.04)",color:"#666",fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>{tr.delete}</button>
               )}
             </div>
           )}
@@ -584,22 +584,22 @@ export default function App() {
   const TABS = [tr.home,"Batches",tr.calculator,tr.forecast];
 
   const TxRow = ({t}) => (
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
       <div style={{flex:1}}>
-        <div style={{fontSize:13}}>{t.desc}</div>
-        <div style={{fontSize:10,color:"#444",marginTop:2}}>{t.cat} · {t.date}</div>
+        <div style={{fontSize:15}}>{t.desc}</div>
+        <div style={{fontSize:11.5,color:"#555",marginTop:3}}>{t.cat} · {t.date}</div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:10}}>
-        <div style={{fontSize:14,fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:t.type==="income"?"#60a5fa":"#f87171"}}>
+        <div style={{fontSize:16,fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:t.type==="income"?"#60a5fa":"#f87171"}}>
           {t.type==="income"?"+":"-"}{fmt(t.amount)} {SYM[t.cur]}
         </div>
         {confirmDelete===("tx-"+t.id) ? (
-          <div style={{display:"flex",gap:4}}>
-            <button onClick={() => setConfirmDelete(null)} style={{background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:6,color:"#888",fontSize:10,padding:"4px 8px",cursor:"pointer",fontFamily:"inherit"}}>No</button>
-            <button onClick={() => deleteTx(t.id)} style={{background:"rgba(248,113,113,0.2)",border:"none",borderRadius:6,color:"#f87171",fontSize:10,padding:"4px 8px",cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>Yes</button>
+          <div style={{display:"flex",gap:5}}>
+            <button onClick={() => setConfirmDelete(null)} style={{background:"none",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#999",fontSize:12.5,padding:"7px 11px",cursor:"pointer",fontFamily:"inherit"}}>No</button>
+            <button onClick={() => deleteTx(t.id)} style={{background:"rgba(248,113,113,0.2)",border:"none",borderRadius:8,color:"#f87171",fontSize:12.5,padding:"7px 11px",cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>Yes</button>
           </div>
         ) : (
-          <button onClick={() => setConfirmDelete("tx-"+t.id)} style={{background:"none",border:"none",color:"#444",fontSize:18,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>
+          <button onClick={() => setConfirmDelete("tx-"+t.id)} style={{background:"none",border:"none",color:"#555",fontSize:22,cursor:"pointer",padding:"4px 8px",lineHeight:1,minWidth:38,minHeight:38}}>×</button>
         )}
       </div>
     </div>
@@ -612,19 +612,19 @@ export default function App() {
       <div style={{padding:"24px 20px 16px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div>
-            <div style={{fontSize:22,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
-            <div style={{fontSize:11,color:"#555",marginTop:2}}>
+            <div style={{fontSize:25,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
+            <div style={{fontSize:12,color:"#666",marginTop:3}}>
               {currentMonth}
-              {ratesLoaded && <span style={{marginLeft:8,fontSize:9,color:"#4ade8066"}}>● live rates</span>}
+              {ratesLoaded && <span style={{marginLeft:8,fontSize:11,color:"#4ade8066"}}>● live rates</span>}
             </div>
           </div>
-          <button onClick={() => setTab(4)} style={{background:tab===4?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",border:"none",cursor:"pointer",color:tab===4?"#fff":"#aaa",fontSize:12,fontWeight:600,fontFamily:"inherit",padding:"6px 14px",borderRadius:99}}>Settings</button>
+          <button onClick={() => setTab(4)} style={{background:tab===4?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",border:"none",cursor:"pointer",color:tab===4?"#fff":"#aaa",fontSize:14,fontWeight:600,fontFamily:"inherit",padding:"10px 18px",borderRadius:99,minHeight:44}}>Settings</button>
         </div>
       </div>
 
       <div style={{display:"flex",padding:"0 20px",gap:4,marginBottom:4}}>
         {TABS.map((t,i) => (
-          <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"10px 0 12px",background:"none",border:"none",color:tab===i?"#fff":"#444",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",borderBottom:tab===i?"2px solid #fff":"2px solid transparent",display:"flex",alignItems:"center",justifyContent:"center",whiteSpace:"nowrap"}}>
+          <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"14px 0 16px",background:"none",border:"none",color:tab===i?"#fff":"#555",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"inherit",borderBottom:tab===i?"2px solid #fff":"2px solid transparent",display:"flex",alignItems:"center",justifyContent:"center",whiteSpace:"nowrap"}}>
             {t}
           </button>
         ))}
@@ -637,25 +637,25 @@ export default function App() {
             <Card style={{marginBottom:14,padding:"24px 20px",position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",top:-40,right:-40,width:120,height:120,background:"radial-gradient(circle,"+(totalNet>=0?"#4ade80":"#f87171")+"22 0%,transparent 70%)",pointerEvents:"none"}}/>
               <Label>{tr.netMonth}</Label>
-              <div style={{fontSize:38,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totalNet>=0?"#4ade80":"#f87171",lineHeight:1.1}}>
-                {totalNet>=0?"+":""}{fmt(totalNet)} <span style={{fontSize:16,color:"#666"}}>kr</span>
+              <div style={{fontSize:40,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totalNet>=0?"#4ade80":"#f87171",lineHeight:1.1}}>
+                {totalNet>=0?"+":""}{fmt(totalNet)} <span style={{fontSize:17,color:"#777"}}>kr</span>
               </div>
             </Card>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
               {[{l:tr.batchProfit,v:monthBatchProfit,c:"#4ade80"},{l:tr.otherIncome,v:monthIncome,c:"#60a5fa"},{l:tr.expenses,v:monthExpense,c:"#f87171"}].map(x => (
-                <Card key={x.l} style={{padding:"14px 12px"}}>
-                  <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>{x.l}</div>
-                  <div style={{fontSize:15,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:x.c}}>{fmtK(x.v)}</div>
+                <Card key={x.l} style={{padding:"16px 13px"}}>
+                  <div style={{fontSize:10.5,color:"#666",textTransform:"uppercase",letterSpacing:1,marginBottom:7}}>{x.l}</div>
+                  <div style={{fontSize:17,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:x.c}}>{fmtK(x.v)}</div>
                 </Card>
               ))}
             </div>
             {holdingValue>0 && (
-              <Card style={{marginBottom:14,padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <Card style={{marginBottom:14,padding:"16px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <div>
-                  <div style={{fontSize:10,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.inventory}</div>
-                  <div style={{fontSize:12,color:"#888",marginTop:2}}>{batches.filter(b => b.status==="holding").length} {tr.activeBatches}</div>
+                  <div style={{fontSize:11.5,color:"#666",textTransform:"uppercase",letterSpacing:1}}>{tr.inventory}</div>
+                  <div style={{fontSize:14,color:"#999",marginTop:3}}>{batches.filter(b => b.status==="holding").length} {tr.activeBatches}</div>
                 </div>
-                <div style={{fontSize:18,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#fbbf24"}}>{fmt(holdingValue)} kr</div>
+                <div style={{fontSize:20,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#fbbf24"}}>{fmt(holdingValue)} kr</div>
               </Card>
             )}
             <Label>Batches</Label>
@@ -676,7 +676,7 @@ export default function App() {
             </div>
             {activeCatFilter && catStats[activeCatFilter] && (
               <Card style={{marginBottom:16,padding:"16px 18px"}}>
-                <div style={{fontSize:13,fontWeight:600,marginBottom:10,color:"#a78bfa"}}>{activeCatFilter}</div>
+                <div style={{fontSize:15,fontWeight:600,marginBottom:11,color:"#a78bfa"}}>{activeCatFilter}</div>
                 <div style={{display:"flex",gap:24,alignItems:"flex-start"}}>
                   <div style={{display:"flex",flexDirection:"column"}}>
                     <div style={{fontSize:10,color:"#555",textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{tr.totalProfit}</div>
@@ -697,7 +697,7 @@ export default function App() {
             )}
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
               <Label>{tr.yourBatches}</Label>
-              <button onClick={() => { setShowAddBatch(!showAddBatch); setShowAddTx(false); }} style={{padding:"8px 16px",border:"none",borderRadius:99,cursor:"pointer",background:showAddBatch?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",color:"#fff",fontSize:12,fontWeight:600,fontFamily:"inherit"}}>
+              <button onClick={() => { setShowAddBatch(!showAddBatch); setShowAddTx(false); }} style={{padding:"11px 20px",border:"none",borderRadius:99,cursor:"pointer",background:showAddBatch?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",color:"#fff",fontSize:14,fontWeight:600,fontFamily:"inherit",minHeight:44}}>
                 {showAddBatch?tr.cancel:tr.newBatch}
               </button>
             </div>
@@ -718,23 +718,23 @@ export default function App() {
                 </div>
                 <Label>Items</Label>
                 {batchForm.items.map((it,idx) => (
-                  <div key={it.id} style={{padding:"12px",marginBottom:8,borderRadius:12,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.05)"}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                      <div style={{fontSize:11,color:"#555",fontWeight:600}}>{batchForm.items.length===1 ? tr.batchName : tr.itemLabel+" "+(idx+1)}</div>
-                      {batchForm.items.length>1 && <button onClick={() => removeItem(idx)} style={{background:"none",border:"none",color:"#f8717188",fontSize:18,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>}
+                  <div key={it.id} style={{padding:"14px",marginBottom:9,borderRadius:12,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.05)"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9}}>
+                      <div style={{fontSize:12.5,color:"#666",fontWeight:600}}>{batchForm.items.length===1 ? tr.batchName : tr.itemLabel+" "+(idx+1)}</div>
+                      {batchForm.items.length>1 && <button onClick={() => removeItem(idx)} style={{background:"none",border:"none",color:"#f8717188",fontSize:22,cursor:"pointer",padding:"4px 8px",lineHeight:1,minWidth:38,minHeight:38}}>×</button>}
                     </div>
                     <div style={{display:"flex",gap:6,marginBottom:6}}>
                       {batchForm.items.length===1 ? (
                         <input placeholder={tr.batchName} value={batchForm.name}
                           onChange={e => setBatchForm(f => ({...f,name:e.target.value}))}
-                          style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
+                          style={{...iStyle,flex:1,fontSize:15,padding:"12px 14px"}}/>
                       ) : (
                         <input placeholder={tr.itemOptional} value={it.name}
                           onChange={e => updateItem(idx,"name",e.target.value)}
-                          style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
+                          style={{...iStyle,flex:1,fontSize:15,padding:"12px 14px"}}/>
                       )}
-                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2}}>
-                        <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3}}>
+                        <div style={{fontSize:10.5,color:"#666",textTransform:"uppercase",letterSpacing:1}}>{tr.qty}</div>
                         <input type="number" min={1} value={it.qty}
                           onChange={e => updateItem(idx,"qty",e.target.value)}
                           onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))}
@@ -745,8 +745,8 @@ export default function App() {
                       <input placeholder={tr.buyPerUnit} value={it.buyCost}
                         onChange={e => updateItem(idx,"buyCost",e.target.value)}
                         onBlur={e => updateItem(idx,"buyCost",evalMath(e.target.value))}
-                        style={{...iStyle,flex:2,fontSize:13,padding:"10px 12px"}}/>
-                      <select value={it.buyCur} onChange={e => updateItem(idx,"buyCur",e.target.value)} style={{...sStyle,flex:1,fontSize:13,padding:"10px 8px"}}>
+                        style={{...iStyle,flex:2,fontSize:15,padding:"12px 14px"}}/>
+                      <select value={it.buyCur} onChange={e => updateItem(idx,"buyCur",e.target.value)} style={{...sStyle,flex:1,fontSize:15,padding:"12px 10px"}}>
                         {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                       </select>
                     </div>
@@ -755,8 +755,8 @@ export default function App() {
                         <input placeholder={tr.sellPerUnit} value={it.sellPrice}
                           onChange={e => updateItem(idx,"sellPrice",e.target.value)}
                           onBlur={e => updateItem(idx,"sellPrice",evalMath(e.target.value))}
-                          style={{...iStyle,flex:2,fontSize:13,padding:"10px 12px"}}/>
-                        <select value={it.sellCur} onChange={e => updateItem(idx,"sellCur",e.target.value)} style={{...sStyle,flex:1,fontSize:13,padding:"10px 8px"}}>
+                          style={{...iStyle,flex:2,fontSize:15,padding:"12px 14px"}}/>
+                        <select value={it.sellCur} onChange={e => updateItem(idx,"sellCur",e.target.value)} style={{...sStyle,flex:1,fontSize:15,padding:"12px 10px"}}>
                           {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                         </select>
                       </div>
@@ -764,8 +764,8 @@ export default function App() {
                   </div>
                 ))}
                 {batchForm.items.some(it=>it.buyCost) && (
-                  <div style={{padding:"10px 14px",borderRadius:10,marginBottom:8,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",fontSize:12}}>
-                    <span style={{color:"#888"}}>Cost: {fmt(batchForm.items.reduce((s,it)=>s+toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0))} kr</span>
+                  <div style={{padding:"12px 16px",borderRadius:10,marginBottom:10,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",fontSize:14}}>
+                    <span style={{color:"#999"}}>Cost: {fmt(batchForm.items.reduce((s,it)=>s+toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0))} kr</span>
                     {batchForm.status==="sold" && (
                       <span style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:batchForm.items.reduce((s,it)=>s+toNOK((+it.sellPrice||0)*(+it.qty||1),it.sellCur)-toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0)>=0?"#4ade80":"#f87171"}}>
                         {fmt(batchForm.items.reduce((s,it)=>s+toNOK((+it.sellPrice||0)*(+it.qty||1),it.sellCur)-toNOK((+it.buyCost||0)*(+it.qty||1),it.buyCur),0))} kr profit
@@ -773,8 +773,8 @@ export default function App() {
                     )}
                   </div>
                 )}
-                <button onClick={addItem} style={{width:"100%",padding:"10px",border:"1px dashed rgba(255,255,255,0.12)",borderRadius:10,background:"none",color:"#888",fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:500,marginBottom:12}}>{tr.addItem}</button>
-                <button onClick={submitBatch} style={{width:"100%",padding:"14px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.addBatch}</button>
+                <button onClick={addItem} style={{width:"100%",padding:"13px",border:"1px dashed rgba(255,255,255,0.12)",borderRadius:10,background:"none",color:"#999",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:500,marginBottom:14}}>{tr.addItem}</button>
+                <button onClick={submitBatch} style={{width:"100%",padding:"16px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.addBatch}</button>
               </Card>
             )}
             {(() => {
@@ -785,9 +785,9 @@ export default function App() {
                 <>
                   {holding.length>0 && (
                     <div style={{marginBottom:16}}>
-                      <button onClick={() => setShowHolding(p=>!p)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:14,padding:"12px 16px",cursor:"pointer",fontFamily:"inherit",marginBottom:showHolding?8:0}}>
-                        <span style={{fontSize:12,fontWeight:600,color:"#fbbf24"}}>Holding · {holding.length} batch{holding.length>1?"es":""}</span>
-                        <span style={{fontSize:12,color:"#fbbf24"}}>{showHolding?"▲":"▼"}</span>
+                      <button onClick={() => setShowHolding(p=>!p)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%",background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:14,padding:"14px 18px",cursor:"pointer",fontFamily:"inherit",marginBottom:showHolding?8:0,minHeight:44}}>
+                        <span style={{fontSize:14,fontWeight:600,color:"#fbbf24"}}>Holding · {holding.length} batch{holding.length>1?"es":""}</span>
+                        <span style={{fontSize:14,color:"#fbbf24"}}>{showHolding?"▲":"▼"}</span>
                       </button>
                       {showHolding && holding.map(b => <BatchCard key={b.id} b={b} {...batchProps}/>)}
                     </div>
@@ -798,7 +798,7 @@ export default function App() {
             })()}
             <div style={{margin:"20px 0 12px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <Label>{tr.otherTx}</Label>
-              <button onClick={() => { setShowAddTx(!showAddTx); setShowAddBatch(false); }} style={{padding:"6px 14px",border:"none",borderRadius:99,cursor:"pointer",background:"rgba(255,255,255,0.06)",color:"#aaa",fontSize:11,fontWeight:600,fontFamily:"inherit"}}>
+              <button onClick={() => { setShowAddTx(!showAddTx); setShowAddBatch(false); }} style={{padding:"9px 16px",border:"none",borderRadius:99,cursor:"pointer",background:"rgba(255,255,255,0.06)",color:"#bbb",fontSize:13,fontWeight:600,fontFamily:"inherit",minHeight:38}}>
                 {showAddTx?tr.cancel:tr.add}
               </button>
             </div>
@@ -819,7 +819,7 @@ export default function App() {
                 <select value={txForm.cat} onChange={e => setTxForm(f => ({...f,cat:e.target.value}))} style={{...sStyle,marginBottom:10}}>
                   {["Work","Freelance","Investment","Personal","Other"].map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                 </select>
-                <button onClick={addTx} style={{width:"100%",padding:"12px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.add.replace("+ ","")}</button>
+                <button onClick={addTx} style={{width:"100%",padding:"15px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.add.replace("+ ","")}</button>
               </Card>
             )}
             {txs.map(t => <TxRow key={t.id} t={t}/>)}
@@ -833,18 +833,18 @@ export default function App() {
             <Card style={{marginBottom:16,padding:"22px 20px",position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",top:-40,right:-40,width:120,height:120,background:"radial-gradient(circle,#a78bfa22 0%,transparent 70%)",pointerEvents:"none"}}/>
               <Label>{tr.currentTrajectory}</Label>
-              <div style={{fontSize:32,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#e2e8f0"}}>
-                {fmt(annual)} <span style={{fontSize:14,color:"#666"}}>{tr.perYear}</span>
+              <div style={{fontSize:34,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#e2e8f0"}}>
+                {fmt(annual)} <span style={{fontSize:15,color:"#777"}}>{tr.perYear}</span>
               </div>
-              <div style={{fontSize:12,color:"#555",marginTop:4}}>{tr.basedOn} {fmt(totalNet)} {tr.perMonth}</div>
+              <div style={{fontSize:13.5,color:"#666",marginTop:5}}>{tr.basedOn} {fmt(totalNet)} {tr.perMonth}</div>
             </Card>
             <Card style={{marginBottom:16}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:13}}>
                 <Label>{tr.annualGrowth}</Label>
-                <div style={{fontSize:24,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#a78bfa"}}>{growth}%</div>
+                <div style={{fontSize:25,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:"#a78bfa"}}>{growth}%</div>
               </div>
-              <input type="range" min={0} max={100} value={growth} onChange={e => setGrowth(+e.target.value)} style={{width:"100%",accentColor:"#a78bfa",height:6}}/>
-              <div style={{display:"flex",justifyContent:"space-between",fontSize:10,color:"#444",marginTop:4}}>
+              <input type="range" min={0} max={100} value={growth} onChange={e => setGrowth(+e.target.value)} style={{width:"100%",accentColor:"#a78bfa",height:8}}/>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:11.5,color:"#555",marginTop:5}}>
                 <span>{tr.conservative}</span><span>{tr.aggressive}</span>
               </div>
             </Card>
@@ -854,13 +854,13 @@ export default function App() {
                 const reached = annual>=m;
                 const progress = Math.min(1,annual/m);
                 return (
-                  <div key={i} style={{marginBottom:i<MILESTONES.length-1?14:0}}>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-                      <span style={{fontSize:13,color:reached?"#fff":"#555",fontWeight:reached?600:400}}>{reached?"✓ ":""}{mlLabels[i]}</span>
-                      <span style={{fontSize:12,fontFamily:"'JetBrains Mono',monospace",color:reached?"#4ade80":"#444"}}>{fmtK(m)} kr</span>
+                  <div key={i} style={{marginBottom:i<MILESTONES.length-1?16:0}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+                      <span style={{fontSize:15,color:reached?"#fff":"#666",fontWeight:reached?600:400}}>{reached?"✓ ":""}{mlLabels[i]}</span>
+                      <span style={{fontSize:13.5,fontFamily:"'JetBrains Mono',monospace",color:reached?"#4ade80":"#555"}}>{fmtK(m)} kr</span>
                     </div>
-                    <div style={{height:6,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden"}}>
-                      <div style={{height:"100%",borderRadius:3,transition:"width 0.5s",width:(progress*100)+"%",background:reached?"linear-gradient(90deg,#4ade80,#22d3ee)":"linear-gradient(90deg,#a78bfa,#a78bfa88)"}}/>
+                    <div style={{height:7,background:"rgba(255,255,255,0.06)",borderRadius:3.5,overflow:"hidden"}}>
+                      <div style={{height:"100%",borderRadius:3.5,transition:"width 0.5s",width:(progress*100)+"%",background:reached?"linear-gradient(90deg,#4ade80,#22d3ee)":"linear-gradient(90deg,#a78bfa,#a78bfa88)"}}/>
                     </div>
                   </div>
                 );
@@ -872,19 +872,19 @@ export default function App() {
                 const max = predYears[5].val||1;
                 const w = Math.max(10,(p.val/max)*100);
                 return (
-                  <div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:i<5?10:0}}>
-                    <div style={{fontSize:11,fontFamily:"'JetBrains Mono',monospace",color:"#555",minWidth:28}}>{p.yr}</div>
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:i<5?12:0}}>
+                    <div style={{fontSize:12.5,fontFamily:"'JetBrains Mono',monospace",color:"#666",minWidth:30}}>{p.yr}</div>
                     <div style={{flex:1}}>
-                      <div style={{height:28,borderRadius:6,display:"flex",alignItems:"center",paddingLeft:10,width:w+"%",minWidth:80,background:i===0?"rgba(255,255,255,0.08)":("linear-gradient(90deg,rgba(167,139,250,"+(0.1+i*0.04)+"),rgba(34,211,238,"+(0.08+i*0.03)+"))"),border:"1px solid rgba(167,139,250,"+(0.1+i*0.05)+")"}}>
-                        <span style={{fontSize:11,fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:i===0?"#888":"#c4b5fd"}}>{fmtK(p.val)} kr</span>
+                      <div style={{height:32,borderRadius:6,display:"flex",alignItems:"center",paddingLeft:12,width:w+"%",minWidth:88,background:i===0?"rgba(255,255,255,0.08)":("linear-gradient(90deg,rgba(167,139,250,"+(0.1+i*0.04)+"),rgba(34,211,238,"+(0.08+i*0.03)+"))"),border:"1px solid rgba(167,139,250,"+(0.1+i*0.05)+")"}}>
+                        <span style={{fontSize:12.5,fontFamily:"'JetBrains Mono',monospace",fontWeight:700,color:i===0?"#999":"#c4b5fd"}}>{fmtK(p.val)} kr</span>
                       </div>
                     </div>
-                    <div style={{fontSize:10,color:"#444",minWidth:28}}>{p.age} yr</div>
+                    <div style={{fontSize:11.5,color:"#555",minWidth:30}}>{p.age} yr</div>
                   </div>
                 );
               })}
               {nextMilestone&&annual>0 && (
-                <div style={{marginTop:16,padding:"12px 14px",borderRadius:12,background:"rgba(167,139,250,0.08)",border:"1px solid rgba(167,139,250,0.12)",fontSize:12,color:"#a78bfa"}}>
+                <div style={{marginTop:16,padding:"14px 16px",borderRadius:12,background:"rgba(167,139,250,0.08)",border:"1px solid rgba(167,139,250,0.12)",fontSize:13.5,color:"#a78bfa"}}>
                   {tr.next} <strong>{mlLabels[MILESTONES.indexOf(nextMilestone)]}</strong> — ~{Math.ceil(Math.log(nextMilestone/annual)/Math.log(1+growth/100))} {tr.yearsAt} {growth}% {tr.growth}
                 </div>
               )}
@@ -909,18 +909,18 @@ export default function App() {
             </Card>
             <Label>{tr.categories}</Label>
             <Card style={{marginBottom:16}}>
-              <div style={{fontSize:12,color:"#666",marginBottom:12}}>{tr.manageCategories}</div>
+              <div style={{fontSize:13.5,color:"#777",marginBottom:13}}>{tr.manageCategories}</div>
               {categories.map((cat,i) => (
-                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:i<categories.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
-                  <span style={{fontSize:13}}>{cat}</span>
-                  <button onClick={() => setCategories(p => p.filter((_,j) => j!==i))} style={{background:"none",border:"none",color:"#444",fontSize:18,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>
+                <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:i<categories.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
+                  <span style={{fontSize:15}}>{cat}</span>
+                  <button onClick={() => setCategories(p => p.filter((_,j) => j!==i))} style={{background:"none",border:"none",color:"#555",fontSize:22,cursor:"pointer",padding:"4px 8px",lineHeight:1,minWidth:38,minHeight:38}}>×</button>
                 </div>
               ))}
-              <div style={{display:"flex",gap:8,marginTop:12}}>
+              <div style={{display:"flex",gap:8,marginTop:14}}>
                 <input placeholder={tr.categoryName} value={newCatInput} onChange={e => setNewCatInput(e.target.value)}
                   onKeyDown={e => { if(e.key==="Enter"&&newCatInput.trim()){ setCategories(p => [...p,newCatInput.trim()]); setNewCatInput(""); }}}
-                  style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
-                <button onClick={() => { if(newCatInput.trim()){ setCategories(p => [...p,newCatInput.trim()]); setNewCatInput(""); }}} style={{padding:"10px 16px",border:"none",borderRadius:12,background:"rgba(255,255,255,0.08)",color:"#fff",fontSize:13,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>
+                  style={{...iStyle,flex:1,fontSize:15,padding:"12px 14px"}}/>
+                <button onClick={() => { if(newCatInput.trim()){ setCategories(p => [...p,newCatInput.trim()]); setNewCatInput(""); }}} style={{padding:"12px 18px",border:"none",borderRadius:12,background:"rgba(255,255,255,0.08)",color:"#fff",fontSize:15,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>
                   {tr.addCategory.replace("+ ","")}
                 </button>
               </div>
