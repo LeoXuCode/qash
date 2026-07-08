@@ -481,7 +481,9 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem("qash_categories")||"[]"); } catch(e) { return []; }
   });
   const [newCatInput, setNewCatInput] = useState("");
-  const [activeCatFilter, setActiveCatFilter] = useState(null);
+  const [activeCatFilter, setActiveCatFilter] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("qash_activeCatFilter")||"null"); } catch(e) { return null; }
+  });
   const [ratesLoaded, setRatesLoaded] = useState(false);
   const [tick, setTick] = useState(0);
   const [showAddBatch, setShowAddBatch] = useState(false);
@@ -503,6 +505,7 @@ export default function App() {
   useEffect(() => { try { localStorage.setItem("qash_batches", JSON.stringify(batches)); } catch(e) {} }, [batches]);
   useEffect(() => { try { localStorage.setItem("qash_txs", JSON.stringify(txs)); } catch(e) {} }, [txs]);
   useEffect(() => { try { localStorage.setItem("qash_categories", JSON.stringify(categories)); } catch(e) {} }, [categories]);
+  useEffect(() => { try { localStorage.setItem("qash_activeCatFilter", JSON.stringify(activeCatFilter)); } catch(e) {} }, [activeCatFilter]);
 
   const currentMonth = new Date().toLocaleDateString(lang==="no"?"nb-NO":"en-US",{month:"long",year:"numeric"});
   const tr = T[lang];
