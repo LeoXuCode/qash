@@ -506,7 +506,10 @@ export default function App() {
 
   const currentMonth = new Date().toLocaleDateString(lang==="no"?"nb-NO":"en-US",{month:"long",year:"numeric"});
   const tr = T[lang];
-  const sortedBatches = useMemo(() => [...batches].sort((a,b) => -a.date.localeCompare(b.date)), [batches]);
+  const sortedBatches = useMemo(() => [...batches].sort((a,b) => {
+    const cmp = -a.date.localeCompare(b.date);
+    return cmp !== 0 ? cmp : b.id - a.id;
+  }), [batches]);
   const batchProfit = useMemo(() => batches.filter(b => b.status==="sold").reduce((s,b) => s+batchTotals(b).profit, 0), [batches,tick]);
   const holdingValue = useMemo(() => batches.filter(b => b.status==="holding").reduce((s,b) => s+batchTotals(b).cost, 0), [batches,tick]);
   const thisMonth = new Date().toISOString().slice(0,7);
