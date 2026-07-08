@@ -487,7 +487,7 @@ export default function App() {
   const [showAddBatch, setShowAddBatch] = useState(false);
   const [batchForm, setBatchForm] = useState({name:"",status:"sold",category:"",items:[emptyItem("NOK")]});
   const [showAddTx, setShowAddTx] = useState(false);
-  const [txForm, setTxForm] = useState({type:"income",desc:"",amount:"",cur:"NOK",cat:"Work",date:new Date().toISOString().slice(0,10)});
+  const [txForm, setTxForm] = useState({type:"income",desc:"",amount:"",cur:"NOK",cat:"Work",date:new Date().toISOString().slice(0,10),recurring:false});
   const [expanded, setExpanded] = useState(null);
   const [sellingBatch, setSellingBatch] = useState(null);
   const [sellPrices, setSellPrices] = useState({});
@@ -512,7 +512,7 @@ export default function App() {
   const thisMonth = new Date().toISOString().slice(0,7);
   const monthBatches = batches.filter(b => b.status==="sold" && b.date.slice(0,7)===thisMonth);
   const monthBatchProfit = monthBatches.reduce((s,b) => s+batchTotals(b).profit, 0);
-  const monthTxs = txs.filter(t => t.date.slice(0,7)===thisMonth);
+  const monthTxs = txs.filter(t => t.date.slice(0,7)===thisMonth || (t.recurring && t.date.slice(0,7)<=thisMonth));
   const txIncome  = txs.filter(t => t.type==="income").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
   const txExpense = txs.filter(t => t.type==="expense").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
   const monthIncome = monthTxs.filter(t => t.type==="income").reduce((s,t) => s+toNOK(t.amount,t.cur), 0);
@@ -551,7 +551,7 @@ export default function App() {
   const addTx = () => {
     if (!txForm.desc||!txForm.amount) return;
     setTxs(p => [...p, {...txForm, id:Date.now(), amount:+txForm.amount}]);
-    setTxForm({type:"income",desc:"",amount:"",cur:defaultCur,cat:"Work",date:new Date().toISOString().slice(0,10)});
+    setTxForm({type:"income",desc:"",amount:"",cur:defaultCur,cat:"Work",date:new Date().toISOString().slice(0,10),recurring:false});
     setShowAddTx(false);
   };
 
@@ -819,10 +819,12 @@ export default function App() {
                     {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                   </select>
                 </div>
-                <select value={txForm.cat} onChange={e => setTxForm(f => ({...f,cat:e.target.value}))} style={{...sStyle,marginBottom:8}}>
+                <select value={txForm.cat} onChange={e => setTxForm(f => ({...f,cat:e.target.value}))} style={{...sStyle,marginBottom:10}}>
                   {["Work","Freelance","Investment","Personal","Other"].map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
                 </select>
-                <input type="date" value={txForm.date} onChange={e => setTxForm(f => ({...f,date:e.target.value}))} style={{...iStyle,marginBottom:10}}/>
+                <div style={{display:"flex",gap:6,marginBottom:10}}>
+                  <Pill active={txForm.recurring} color="#a78bfa" onClick={() => setTxForm(f => ({...f,recurring:!f.recurring}))} small>Recurring</Pill>
+                </div>
                 <button onClick={addTx} style={{width:"100%",padding:"15px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.add.replace("+ ","")}</button>
               </Card>
             )}
