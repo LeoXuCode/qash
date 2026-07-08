@@ -544,7 +544,7 @@ export default function App() {
   const removeItem = idx => setBatchForm(f => ({...f, items:f.items.filter((_,i) => i!==idx)}));
 
   const submitBatch = () => {
-    if (batchForm.items.every(it => !it.buyCost)) return;
+    if (batchForm.items.every(it => !it.buyCost && !it.sellPrice)) return;
     setBatches(p => [...p, {...batchForm, id:Date.now(), date:new Date().toISOString().slice(0,10),
       items:batchForm.items.filter(it => it.buyCost).map(it => ({...it, qty:+it.qty||1, buyCost:+it.buyCost, sellPrice:+(it.sellPrice||0)}))}]);
     setBatchForm({name:"",status:"sold",category:"",items:[emptyItem(defaultCur)]});
