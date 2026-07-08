@@ -478,7 +478,7 @@ export default function App() {
   const [age, setAge] = useState(20);
   const [growth, setGrowth] = useState(15);
   const [categories, setCategories] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("qash_categories")||JSON.stringify(DEFAULT_CATEGORIES)); } catch(e) { return DEFAULT_CATEGORIES; }
+    try { return JSON.parse(localStorage.getItem("qash_categories")||"[]"); } catch(e) { return []; }
   });
   const [newCatInput, setNewCatInput] = useState("");
   const [activeCatFilter, setActiveCatFilter] = useState(null);
