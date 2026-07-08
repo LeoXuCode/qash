@@ -546,7 +546,7 @@ export default function App() {
   const submitBatch = () => {
     if (batchForm.items.every(it => !it.buyCost && !it.sellPrice)) return;
     setBatches(p => [...p, {...batchForm, id:Date.now(), date:new Date().toISOString().slice(0,10),
-      items:batchForm.items.filter(it => it.buyCost).map(it => ({...it, qty:+it.qty||1, buyCost:+it.buyCost, sellPrice:+(it.sellPrice||0)}))}]);
+      items:batchForm.items.filter(it => it.buyCost || it.sellPrice).map(it => ({...it, qty:+it.qty||1, buyCost:+it.buyCost, sellPrice:+(it.sellPrice||0)}))}]);
     setBatchForm({name:"",status:"sold",category:"",items:[emptyItem(defaultCur)]});
     setShowAddBatch(false);
   };
@@ -676,7 +676,7 @@ export default function App() {
             <Label>{tr.groupedView}</Label>
             <div style={{display:"flex",gap:6,marginBottom:12,flexWrap:"wrap"}}>
               <Pill small active={!activeCatFilter} color="#4ade80" onClick={() => setActiveCatFilter(null)}>{tr.allBatches}</Pill>
-              {Object.keys(catStats).map(cat => (
+              {Object.keys(catStats).filter(cat => cat !== tr.noCat).map(cat => (
                 <Pill key={cat} small active={activeCatFilter===cat} color="#a78bfa" onClick={() => setActiveCatFilter(activeCatFilter===cat?null:cat)}>{cat}</Pill>
               ))}
             </div>
