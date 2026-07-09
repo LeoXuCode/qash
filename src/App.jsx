@@ -653,10 +653,10 @@ export default function App() {
   );
 
   return (
-    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'Inter',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden",paddingTop:"env(safe-area-inset-top)",paddingBottom:"env(safe-area-inset-bottom)"}}>
+    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'Inter',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden",paddingTop:"env(safe-area-inset-top)"}}>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
-      <div style={{padding:"16px 20px",paddingTop:"env(safe-area-inset-top)"}}>
+      <div style={{padding:"16px 20px"}}>
         <div>
           <div style={{fontSize:28,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
           <div style={{fontSize:13,color:"#666",marginTop:2}}>
@@ -666,7 +666,7 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{padding:"16px 20px 90px"}}>
+      <div style={{padding:"16px 20px 100px"}}>
 
         {tab===0 && (
           <div>
