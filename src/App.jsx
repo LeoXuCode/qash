@@ -400,10 +400,11 @@ function ToolsPage({tr}) {
   );
 }
 
-function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete, onStartEdit}) {
+function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete, onStartEdit, editingBatchId, batchForm, setBatchForm, submitBatch, cancelEditBatch, updateItem, addItem, removeItem, defaultCur}) {
   const totals = batchTotals(b);
   const isExp = expanded===b.id;
   const isSelling = sellingId===b.id;
+  const isEditing = editingBatchId===b.id;
   return (
     <div style={{background:"rgba(255,255,255,0.05)",borderRadius:24,padding:"18px",border:"1px solid rgba(255,255,255,0.08)",marginBottom:10,cursor:"pointer"}}
       onClick={() => onExpand(b.id)}>
@@ -427,6 +428,57 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
       </div>
       {isExp && (
         <div style={{marginTop:16,paddingTop:14,borderTop:"1px solid rgba(255,255,255,0.06)"}} onClick={e => e.stopPropagation()}>
+          {isEditing && (
+            <div style={{padding:"14px",marginBottom:14,borderRadius:12,background:"rgba(96,165,250,0.06)",border:"1px solid rgba(96,165,250,0.15)"}}>
+              <input placeholder={tr.batchName} value={batchForm.name} onChange={e => setBatchForm(f => ({...f,name:e.target.value}))} style={{...iStyle,marginBottom:10,fontSize:15}}/>
+              <div style={{display:"flex",gap:6,marginBottom:10,flexWrap:"wrap"}}>
+                {["sold","holding"].map(s => (
+                  <button key={s} onClick={() => setBatchForm(f => ({...f,status:s}))} style={{padding:"9px 15px",borderRadius:99,cursor:"pointer",fontFamily:"inherit",fontSize:14,fontWeight:600,minHeight:38,background:batchForm.status===s?"rgba(74,222,128,0.15)":"rgba(255,255,255,0.04)",color:batchForm.status===s?"#4ade80":"#666",border:batchForm.status===s?"1px solid rgba(74,222,128,0.3)":"1px solid transparent",transition:"all 0.2s"}}>{s==="sold"?tr.sold:tr.holding}</button>
+                ))}
+              </div>
+              <div style={{marginBottom:10}}>
+                <div style={{fontSize:12,color:"#777",textTransform:"uppercase",letterSpacing:1.3,marginBottom:9,fontWeight:600}}>{tr.category}</div>
+                <select value={batchForm.category} onChange={e => setBatchForm(f => ({...f,category:e.target.value}))} style={{...iStyle,fontSize:15}}>
+                  <option value="" style={{background:"#1a1a1e"}}>{tr.noCat}</option>
+                </select>
+              </div>
+              <div style={{marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:600,marginBottom:8,color:"#777"}}>Items</div>
+                {batchForm.items.map((it,idx) => (
+                  <div key={it.id} style={{padding:"12px",marginBottom:8,borderRadius:12,background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.05)"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
+                      <div style={{fontSize:11,color:"#555",fontWeight:600}}>Item {idx+1}</div>
+                      {batchForm.items.length>1 && <button onClick={() => removeItem(idx)} style={{background:"none",border:"none",color:"#f8717188",fontSize:18,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>}
+                    </div>
+                    <div style={{display:"flex",gap:6,marginBottom:6}}>
+                      <input placeholder={tr.itemOptional} value={it.name} onChange={e => updateItem(idx,"name",e.target.value)} style={{...iStyle,flex:1,fontSize:13,padding:"10px 12px"}}/>
+                      <div style={{fontSize:9,color:"#555",textTransform:"uppercase",letterSpacing:1}}>Qty</div>
+                      <input type="number" min={1} value={it.qty} onChange={e => updateItem(idx,"qty",e.target.value)} onBlur={e => updateItem(idx,"qty",Math.max(1,+e.target.value||1))} style={{padding:"8px 8px",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,color:"#e8e8e8",fontSize:13,fontFamily:"inherit",outline:"none",width:50,textAlign:"center"}}/>
+                    </div>
+                    <div style={{display:"flex",gap:6,marginBottom:6}}>
+                      <input placeholder={tr.buyPerUnit} value={it.buyCost} onChange={e => updateItem(idx,"buyCost",e.target.value)} onBlur={e => updateItem(idx,"buyCost",evalMath(e.target.value))} style={{...iStyle,flex:2,fontSize:13,padding:"10px 12px"}}/>
+                      <select value={it.buyCur} onChange={e => updateItem(idx,"buyCur",e.target.value)} style={{...iStyle,flex:1,fontSize:13,padding:"10px 8px"}}>
+                        {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
+                      </select>
+                    </div>
+                    {batchForm.status==="sold" && (
+                      <div style={{display:"flex",gap:6}}>
+                        <input placeholder={tr.sellPerUnit} value={it.sellPrice} onChange={e => updateItem(idx,"sellPrice",e.target.value)} onBlur={e => updateItem(idx,"sellPrice",evalMath(e.target.value))} style={{...iStyle,flex:2,fontSize:13,padding:"10px 12px"}}/>
+                        <select value={it.sellCur} onChange={e => updateItem(idx,"sellCur",e.target.value)} style={{...iStyle,flex:1,fontSize:13,padding:"10px 8px"}}>
+                          {Object.keys(RATES).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <button onClick={addItem} style={{width:"100%",padding:"10px",border:"1px dashed rgba(255,255,255,0.12)",borderRadius:10,background:"none",color:"#888",fontSize:12,cursor:"pointer",fontFamily:"inherit",fontWeight:500,marginBottom:12}}>{tr.addItem}</button>
+              <div style={{display:"flex",gap:8}}>
+                <button onClick={cancelEditBatch} style={{flex:1,padding:"13px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#999",fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>{tr.cancel}</button>
+                <button onClick={submitBatch} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"#fff",color:"#000",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Save</button>
+              </div>
+            </div>
+          )}
           {isSelling && (
             <div style={{padding:"14px",marginBottom:14,borderRadius:12,background:"rgba(74,222,128,0.06)",border:"1px solid rgba(74,222,128,0.15)"}}>
               <div style={{fontSize:12.5,color:"#4ade80",fontWeight:600,marginBottom:12,textTransform:"uppercase",letterSpacing:1}}>{tr.enterSellPrices}</div>
@@ -471,7 +523,7 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
               {b.status==="sold" && <span>{tr.revenue}: {fmt(totals.rev)} kr</span>}
             </div>
           )}
-          {!isSelling && (
+          {!isSelling && !isEditing && (
             <div style={{display:"flex",gap:8,marginTop:14}}>
               {b.status==="holding" && (
                 <button onClick={() => onStartSell(b)} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"rgba(74,222,128,0.12)",color:"#4ade80",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.markSold}</button>
@@ -590,7 +642,6 @@ export default function App() {
     if (editingBatchId) {
       setBatches(p => p.map(b => b.id===editingBatchId ? {...processedBatch, id:b.id, date:b.date} : b));
       setEditingBatchId(null);
-      setExpanded(null);
     } else {
       setBatches(p => [...p, {...processedBatch, id:Date.now(), date:new Date().toISOString().slice(0,10)}]);
     }
@@ -601,14 +652,12 @@ export default function App() {
   const startEditBatch = (b) => {
     setEditingBatchId(b.id);
     setBatchForm({name:b.name, status:b.status, category:b.category, items:b.items});
-    setShowAddBatch(true);
-    setExpanded(null);
+    setExpanded(b.id);
   };
 
   const cancelEditBatch = () => {
     setEditingBatchId(null);
     setBatchForm({name:"",status:"sold",category:"",items:[emptyItem(defaultCur)]});
-    setShowAddBatch(false);
   };
 
   const addTx = () => {
@@ -641,7 +690,7 @@ export default function App() {
     sellPrices, onSellPriceChange:(i,f,v) => setSellPrices(p => ({...p, [i]:{...p[i],[f]:v}})),
     onConfirmSell:confirmSell, onCancelSell:() => { setSellingBatch(null); setSellPrices({}); },
     onDelete:deleteBatch, confirmDelete, onConfirmDelete:setConfirmDelete, onCancelDelete:() => setConfirmDelete(null),
-    onStartEdit:startEditBatch,
+    onStartEdit:startEditBatch, editingBatchId, batchForm, setBatchForm, submitBatch, cancelEditBatch, updateItem, addItem, removeItem, defaultCur,
   };
 
   const predYears = [];
