@@ -576,6 +576,8 @@ export default function App() {
   const [sellPrices, setSellPrices] = useState({});
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [showHolding, setShowHolding] = useState(false);
+  const [deletingCategory, setDeletingCategory] = useState(null);
+  const [reassignTo, setReassignTo] = useState("");
 
   useEffect(() => {
     fetchLiveRates()
@@ -1027,10 +1029,41 @@ export default function App() {
             <Label>{tr.categories}</Label>
             <Card style={{marginBottom:16}}>
               <div style={{fontSize:13.5,color:"#777",marginBottom:13}}>{tr.manageCategories}</div>
+              {deletingCategory && (
+                <div style={{padding:"14px",marginBottom:14,borderRadius:12,background:"rgba(255,193,7,0.06)",border:"1px solid rgba(255,193,7,0.15)"}}>
+                  <div style={{fontSize:13.5,color:"#fbbf24",fontWeight:600,marginBottom:12}}>
+                    {batches.filter(b => b.category === deletingCategory).length} batches use this category. What should we do with them?
+                  </div>
+                  <select value={reassignTo} onChange={e => setReassignTo(e.target.value)} style={{...iStyle,marginBottom:12,fontSize:15}}>
+                    <option value="" style={{background:"#1a1a1e"}}>Select a category...</option>
+                    <option value="__NOCATEGORY__" style={{background:"#1a1a1e"}}>Move to No category</option>
+                    {categories.filter(c => c !== deletingCategory).map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
+                  </select>
+                  <div style={{display:"flex",gap:8}}>
+                    <button onClick={() => { setDeletingCategory(null); setReassignTo(""); }} style={{flex:1,padding:"13px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#999",fontSize:14,cursor:"pointer",fontFamily:"inherit"}}>{tr.cancel}</button>
+                    <button onClick={() => {
+                      if(reassignTo) {
+                        setBatches(p => p.map(b => b.category === deletingCategory ? {...b, category: reassignTo === "__NOCATEGORY__" ? "" : reassignTo} : b));
+                        setCategories(p => p.filter(c => c !== deletingCategory));
+                        setDeletingCategory(null);
+                        setReassignTo("");
+                      }
+                    }} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"#fff",color:"#000",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>Confirm</button>
+                  </div>
+                </div>
+              )}
               {categories.map((cat,i) => (
                 <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:i<categories.length-1?"1px solid rgba(255,255,255,0.04)":"none"}}>
                   <span style={{fontSize:15}}>{cat}</span>
-                  <button onClick={() => setCategories(p => p.filter((_,j) => j!==i))} style={{background:"none",border:"none",color:"#555",fontSize:22,cursor:"pointer",padding:"4px 8px",lineHeight:1,minWidth:38,minHeight:38}}>×</button>
+                  <button onClick={() => {
+                    const affectedBatches = batches.filter(b => b.category === cat);
+                    if(affectedBatches.length > 0) {
+                      setDeletingCategory(cat);
+                      setReassignTo("");
+                    } else {
+                      setCategories(p => p.filter((_,j) => j!==i));
+                    }
+                  }} style={{background:"none",border:"none",color:"#555",fontSize:22,cursor:"pointer",padding:"4px 8px",lineHeight:1,minWidth:38,minHeight:38}}>×</button>
                 </div>
               ))}
               <div style={{display:"flex",gap:8,marginTop:14}}>
