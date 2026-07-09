@@ -400,15 +400,21 @@ function ToolsPage({tr}) {
   );
 }
 
-function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete, onStartEdit, editingBatchId, batchForm, setBatchForm, submitBatch, cancelEditBatch, updateItem, addItem, removeItem, defaultCur}) {
+function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete, onStartEdit, editingBatchId, batchForm, setBatchForm, submitBatch, cancelEditBatch, updateItem, addItem, removeItem, defaultCur, isSelecting, selectedBatchIds, onToggleSelect}) {
   const totals = batchTotals(b);
   const isExp = expanded===b.id;
   const isSelling = sellingId===b.id;
   const isEditing = editingBatchId===b.id;
+  const isSelected = selectedBatchIds.includes(b.id);
   return (
-    <div style={{background:"rgba(255,255,255,0.05)",borderRadius:24,padding:"18px",border:"1px solid rgba(255,255,255,0.08)",marginBottom:10,cursor:"pointer"}}
-      onClick={() => onExpand(b.id)}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+    <div style={{background:"rgba(255,255,255,0.05)",borderRadius:24,padding:"18px",border:"1px solid rgba(255,255,255,0.08)",marginBottom:10,cursor:isSelecting?"pointer":"pointer",display:"flex",alignItems:"flex-start",gap:isSelecting?12:0}}
+      onClick={() => isSelecting ? onToggleSelect(b.id) : onExpand(b.id)}>
+      {isSelecting && (
+        <div style={{width:22,height:22,borderRadius:"50%",border:"2px solid "+(isSelected?"#4ade80":"rgba(255,255,255,0.3)"),background:isSelected?"#4ade80":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
+          {isSelected && <span style={{color:"#000",fontSize:14,fontWeight:700,lineHeight:1}}>✓</span>}
+        </div>
+      )}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flex:1,width:"100%"}}>
         <div style={{flex:1}}>
           <div style={{fontSize:16,fontWeight:600}}>{b.name}</div>
           <div style={{fontSize:12.5,color:"#666",marginTop:4,display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"}}>
@@ -578,6 +584,10 @@ export default function App() {
   const [showHolding, setShowHolding] = useState(false);
   const [deletingCategory, setDeletingCategory] = useState(null);
   const [reassignTo, setReassignTo] = useState("");
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [selectedBatchIds, setSelectedBatchIds] = useState([]);
+  const [bulkAction, setBulkAction] = useState(null);
+  const [bulkCategory, setBulkCategory] = useState("");
 
   useEffect(() => {
     fetchLiveRates()
@@ -687,12 +697,41 @@ export default function App() {
 
   const toggleExpand = id => { if(sellingBatch===id) return; setExpanded(p => p===id?null:id); };
 
+  const toggleSelectBatch = (id) => {
+    setSelectedBatchIds(prev => prev.includes(id) ? prev.filter(bid => bid!==id) : [...prev, id]);
+  };
+
+  const handleBulkDelete = () => {
+    if(confirm("Delete "+selectedBatchIds.length+" batch"+(selectedBatchIds.length>1?"es":"")+"?")) {
+      setBatches(p => p.filter(b => !selectedBatchIds.includes(b.id)));
+      setSelectedBatchIds([]);
+      setIsSelecting(false);
+    }
+  };
+
+  const handleBulkChangeCategory = (newCat) => {
+    setBatches(p => p.map(b => selectedBatchIds.includes(b.id) ? {...b, category:newCat} : b));
+    setSelectedBatchIds([]);
+    setIsSelecting(false);
+    setBulkAction(null);
+  };
+
+  const handleBulkMarkSold = () => {
+    const holdingBatchIds = selectedBatchIds.filter(id => batches.find(b => b.id===id)?.status==="holding");
+    if(holdingBatchIds.length > 0) {
+      setBatches(p => p.map(b => holdingBatchIds.includes(b.id) ? {...b, status:"sold"} : b));
+      setSelectedBatchIds([]);
+      setIsSelecting(false);
+    }
+  };
+
   const batchProps = {
     t:tr, onExpand:toggleExpand, expanded, onStartSell:startSelling, sellingId:sellingBatch,
     sellPrices, onSellPriceChange:(i,f,v) => setSellPrices(p => ({...p, [i]:{...p[i],[f]:v}})),
     onConfirmSell:confirmSell, onCancelSell:() => { setSellingBatch(null); setSellPrices({}); },
     onDelete:deleteBatch, confirmDelete, onConfirmDelete:setConfirmDelete, onCancelDelete:() => setConfirmDelete(null),
     onStartEdit:startEditBatch, editingBatchId, batchForm, setBatchForm, submitBatch, cancelEditBatch, updateItem, addItem, removeItem, defaultCur,
+    isSelecting, selectedBatchIds, onToggleSelect:toggleSelectBatch,
   };
 
   const predYears = [];
@@ -808,11 +847,18 @@ export default function App() {
                 </div>
               </Card>
             )}
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,gap:8}}>
               <Label>{tr.yourBatches}</Label>
-              <button onClick={() => { setShowAddBatch(!showAddBatch); setShowAddTx(false); }} style={{padding:"11px 20px",border:"none",borderRadius:99,cursor:"pointer",background:showAddBatch?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",color:"#fff",fontSize:14,fontWeight:600,fontFamily:"inherit",minHeight:44}}>
-                {showAddBatch?tr.cancel:tr.newBatch}
-              </button>
+              <div style={{display:"flex",gap:8}}>
+                {!isSelecting && (
+                  <button onClick={() => { setShowAddBatch(!showAddBatch); setShowAddTx(false); }} style={{padding:"11px 20px",border:"none",borderRadius:99,cursor:"pointer",background:showAddBatch?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",color:"#fff",fontSize:14,fontWeight:600,fontFamily:"inherit",minHeight:44}}>
+                    {showAddBatch?tr.cancel:tr.newBatch}
+                  </button>
+                )}
+                <button onClick={() => { setIsSelecting(!isSelecting); if(!isSelecting) setSelectedBatchIds([]); else { setSelectedBatchIds([]); } }} style={{padding:"11px 20px",border:"none",borderRadius:99,cursor:"pointer",background:isSelecting?"rgba(248,113,113,0.15)":"rgba(255,255,255,0.06)",color:isSelecting?"#f87171":"#fff",fontSize:14,fontWeight:600,fontFamily:"inherit",minHeight:44,transition:"all 0.2s"}}>
+                  {isSelecting?"Done":"Select"}
+                </button>
+              </div>
             </div>
             {showAddBatch && (
               <Card style={{marginBottom:16}}>
@@ -1078,6 +1124,29 @@ export default function App() {
           </div>
         )}
       </div>
+
+      {isSelecting && selectedBatchIds.length > 0 && (
+        <div style={{position:"fixed",bottom:66,left:"50%",transform:"translateX(-50%)",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)",background:"rgba(18,18,22,0.97)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:"16px 16px 0 0",padding:"16px",display:"flex",gap:10,flexDirection:"column",zIndex:99}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+            <span style={{fontSize:14,fontWeight:600,color:"#ddd"}}>{selectedBatchIds.length} selected</span>
+            <button onClick={handleBulkDelete} style={{padding:"8px 14px",border:"none",borderRadius:8,background:"rgba(248,113,113,0.15)",color:"#f87171",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Delete</button>
+          </div>
+          <div style={{display:"flex",gap:8}}>
+            <button onClick={() => setBulkAction(bulkAction==="category"?null:"category")} style={{flex:1,padding:"12px",border:"none",borderRadius:10,background:"rgba(255,255,255,0.06)",color:"#ddd",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all 0.2s"}}>{bulkAction==="category"?"Cancel":"Change category"}</button>
+            {batches.filter(b => selectedBatchIds.includes(b.id) && b.status==="holding").length > 0 && (
+              <button onClick={handleBulkMarkSold} style={{flex:1,padding:"12px",border:"none",borderRadius:10,background:"rgba(74,222,128,0.15)",color:"#4ade80",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{tr.markSold}</button>
+            )}
+          </div>
+          {bulkAction==="category" && (
+            <div style={{marginTop:8}}>
+              <select value={bulkCategory} onChange={e => { handleBulkChangeCategory(e.target.value); }} style={{width:"100%",padding:"12px 14px",background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,color:"#e8e8e8",fontSize:14,fontFamily:"inherit",outline:"none"}}>
+                <option value="" style={{background:"#1a1a1e"}}>No category</option>
+                {categories.map(c => <option key={c} value={c} style={{background:"#1a1a1e"}}>{c}</option>)}
+              </select>
+            </div>
+          )}
+        </div>
+      )}
 
       <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:3,paddingTop:8,paddingBottom:"28px",paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
         {TABS.map((t,i) => {
