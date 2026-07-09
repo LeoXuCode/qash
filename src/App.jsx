@@ -400,7 +400,7 @@ function ToolsPage({tr}) {
   );
 }
 
-function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete}) {
+function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPrices, onSellPriceChange, onConfirmSell, onCancelSell, onDelete, confirmDelete, onConfirmDelete, onCancelDelete, onStartEdit}) {
   const totals = batchTotals(b);
   const isExp = expanded===b.id;
   const isSelling = sellingId===b.id;
@@ -476,6 +476,7 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
               {b.status==="holding" && (
                 <button onClick={() => onStartSell(b)} style={{flex:1,padding:"13px",border:"none",borderRadius:10,background:"rgba(74,222,128,0.12)",color:"#4ade80",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>{tr.markSold}</button>
               )}
+              <button onClick={() => onStartEdit(b)} style={{padding:"13px 18px",border:"none",borderRadius:10,background:"rgba(96,165,250,0.12)",color:"#60a5fa",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:600}}>Edit</button>
               {confirmDelete===("batch-"+b.id) ? (
                 <div style={{flex:1,display:"flex",gap:6}}>
                   <button onClick={onCancelDelete} style={{flex:1,padding:"13px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,background:"none",color:"#999",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>{tr.keep}</button>
@@ -514,6 +515,7 @@ export default function App() {
   const [ratesLoaded, setRatesLoaded] = useState(false);
   const [tick, setTick] = useState(0);
   const [showAddBatch, setShowAddBatch] = useState(false);
+  const [editingBatchId, setEditingBatchId] = useState(null);
   const [batchForm, setBatchForm] = useState({name:"",status:"sold",category:"",items:[emptyItem("NOK")]});
   const [showAddTx, setShowAddTx] = useState(false);
   const [txForm, setTxForm] = useState({type:"income",desc:"",amount:"",cur:"NOK",cat:"Work",date:new Date().toISOString().slice(0,10),recurring:false});
@@ -581,8 +583,30 @@ export default function App() {
 
   const submitBatch = () => {
     if (batchForm.items.every(it => !it.buyCost && !it.sellPrice)) return;
-    setBatches(p => [...p, {...batchForm, id:Date.now(), date:new Date().toISOString().slice(0,10),
-      items:batchForm.items.filter(it => it.buyCost || it.sellPrice).map(it => ({...it, qty:+it.qty||1, buyCost:+it.buyCost, sellPrice:+(it.sellPrice||0)}))}]);
+    const processedBatch = {
+      ...batchForm,
+      items:batchForm.items.filter(it => it.buyCost || it.sellPrice).map(it => ({...it, qty:+it.qty||1, buyCost:+it.buyCost, sellPrice:+(it.sellPrice||0)}))
+    };
+    if (editingBatchId) {
+      setBatches(p => p.map(b => b.id===editingBatchId ? {...processedBatch, id:b.id, date:b.date} : b));
+      setEditingBatchId(null);
+      setExpanded(null);
+    } else {
+      setBatches(p => [...p, {...processedBatch, id:Date.now(), date:new Date().toISOString().slice(0,10)}]);
+    }
+    setBatchForm({name:"",status:"sold",category:"",items:[emptyItem(defaultCur)]});
+    setShowAddBatch(false);
+  };
+
+  const startEditBatch = (b) => {
+    setEditingBatchId(b.id);
+    setBatchForm({name:b.name, status:b.status, category:b.category, items:b.items});
+    setShowAddBatch(true);
+    setExpanded(null);
+  };
+
+  const cancelEditBatch = () => {
+    setEditingBatchId(null);
     setBatchForm({name:"",status:"sold",category:"",items:[emptyItem(defaultCur)]});
     setShowAddBatch(false);
   };
@@ -617,6 +641,7 @@ export default function App() {
     sellPrices, onSellPriceChange:(i,f,v) => setSellPrices(p => ({...p, [i]:{...p[i],[f]:v}})),
     onConfirmSell:confirmSell, onCancelSell:() => { setSellingBatch(null); setSellPrices({}); },
     onDelete:deleteBatch, confirmDelete, onConfirmDelete:setConfirmDelete, onCancelDelete:() => setConfirmDelete(null),
+    onStartEdit:startEditBatch,
   };
 
   const predYears = [];
@@ -811,7 +836,10 @@ export default function App() {
                   </div>
                 )}
                 <button onClick={addItem} style={{width:"100%",padding:"13px",border:"1px dashed rgba(255,255,255,0.12)",borderRadius:10,background:"none",color:"#999",fontSize:14,cursor:"pointer",fontFamily:"inherit",fontWeight:500,marginBottom:14}}>{tr.addItem}</button>
-                <button onClick={submitBatch} style={{width:"100%",padding:"16px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.addBatch}</button>
+                <div style={{display:"flex",gap:8}}>
+                  {editingBatchId && <button onClick={cancelEditBatch} style={{flex:1,padding:"16px",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,background:"none",color:"#999",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{tr.cancel}</button>}
+                  <button onClick={submitBatch} style={{flex:editingBatchId?1:"full",width:editingBatchId?"auto":"100%",padding:"16px",border:"none",borderRadius:12,background:"#fff",color:"#000",fontSize:16,fontWeight:700,cursor:"pointer",fontFamily:"inherit"}}>{editingBatchId?"Save changes":tr.addBatch}</button>
+                </div>
               </Card>
             )}
             {(() => {
