@@ -213,12 +213,13 @@ const IconTools = ({color}) => (
 );
 const IconForecast = ({color}) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"/><polyline points="12 12 20 7.5"/><polyline points="12 21 12 12"/><polyline points="4 7.5 12 12"/>
+    <polyline points="23 6 13 16"/><polyline points="1 6 11 16"/><polyline points="15 6 5 16"/><line x1="3" y1="21" x2="21" y2="21"/>
   </svg>
 );
 const IconSettings = ({color}) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6m-17.78 7.78l4.24-4.24m5.08-5.08l4.24-4.24"/>
+    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
   </svg>
 );
 
@@ -968,14 +969,17 @@ export default function App() {
         )}
       </div>
 
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:8,paddingBottom:"calc(env(safe-area-inset-bottom) + 12px)",paddingTop:12,paddingLeft:12,paddingRight:12,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:4,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)",paddingTop:8,paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
         {TABS.map((t,i) => {
           const Icon = t.component;
           const isActive = tab===i;
           return (
-            <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"12px 8px",background:isActive?"rgba(74,222,128,0.15)":"transparent",border:isActive?"1px solid rgba(74,222,128,0.3)":"1px solid transparent",borderRadius:16,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.2s"}}>
-              <Icon color={isActive?"#4ade80":"#555"}/>
-              <span style={{fontSize:11,fontWeight:600,color:isActive?"#4ade80":"#555"}}>{t.name}</span>
+            <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"8px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:4,transition:"all 0.2s",position:"relative"}}>
+              {isActive && <div style={{position:"absolute",top:4,width:32,height:32,background:"rgba(74,222,128,0.2)",border:"1px solid rgba(74,222,128,0.3)",borderRadius:12}}/>}
+              <div style={{position:"relative",zIndex:1}}>
+                <Icon color={isActive?"#4ade80":"#555"}/>
+              </div>
+              <span style={{fontSize:10,fontWeight:600,color:isActive?"#4ade80":"#555",position:"relative",zIndex:1}}>{t.name}</span>
             </button>
           );
         })}
