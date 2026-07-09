@@ -969,17 +969,17 @@ export default function App() {
         )}
       </div>
 
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:4,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)",paddingTop:8,paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:3,paddingTop:8,paddingBottom:"env(safe-area-inset-bottom)",paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
         {TABS.map((t,i) => {
           const Icon = t.component;
           const isActive = tab===i;
           return (
-            <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"8px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:4,transition:"all 0.2s",position:"relative"}}>
-              {isActive && <div style={{position:"absolute",top:4,width:32,height:32,background:"rgba(74,222,128,0.2)",border:"1px solid rgba(74,222,128,0.3)",borderRadius:12}}/>}
-              <div style={{position:"relative",zIndex:1}}>
+            <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"6px 0",background:"transparent",border:"none",cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,transition:"all 0.2s",position:"relative"}}>
+              {isActive && <div style={{position:"absolute",top:3,width:28,height:28,background:"rgba(74,222,128,0.2)",border:"1px solid rgba(74,222,128,0.3)",borderRadius:10}}/>}
+              <div style={{position:"relative",zIndex:1,display:"flex",alignItems:"center",justifyContent:"center"}}>
                 <Icon color={isActive?"#4ade80":"#555"}/>
               </div>
-              <span style={{fontSize:10,fontWeight:600,color:isActive?"#4ade80":"#555",position:"relative",zIndex:1}}>{t.name}</span>
+              <span style={{fontSize:9.5,fontWeight:600,color:isActive?"#4ade80":"#555",position:"relative",zIndex:1,lineHeight:1}}>{t.name}</span>
             </button>
           );
         })}
