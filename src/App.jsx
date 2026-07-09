@@ -662,7 +662,7 @@ export default function App() {
           <div style={{fontSize:28,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
           <div style={{fontSize:13,color:"#666",marginTop:2}}>
             {currentMonth}
-            {ratesLoaded && <span style={{marginLeft:8,fontSize:11,color:"#4ade8066"}}>● live rates</span>}
+            {ratesLoaded && <span style={{marginLeft:8,fontSize:11,color:"#4ade80"}}>●</span>}
           </div>
         </div>
       </div>
