@@ -969,7 +969,7 @@ export default function App() {
         )}
       </div>
 
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:3,paddingTop:8,paddingBottom:"20px",paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
+      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",background:"rgba(18,18,22,0.95)",backdropFilter:"blur(10px)",WebkitBackdropFilter:"blur(10px)",borderRadius:20,display:"flex",justifyContent:"center",alignItems:"center",gap:3,paddingTop:8,paddingBottom:"28px",paddingLeft:8,paddingRight:8,margin:"0 auto",width:"calc(100% - 24px)",maxWidth:"calc(480px - 24px)"}}>
         {TABS.map((t,i) => {
           const Icon = t.component;
           const isActive = tab===i;
