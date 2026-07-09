@@ -4,7 +4,7 @@ const FALLBACK_RATES = { NOK:1, USD:0.108, EUR:0.090, GBP:0.079, CNY:0.728, SEK:
 const SYM = { NOK:"kr", USD:"$", EUR:"€", GBP:"£", CNY:"¥", SEK:"kr", DKK:"kr", JPY:"¥", KRW:"₩" };
 
 async function fetchLiveRates() {
-  const res = await fetch("https://api.frankfurter.app/latest?from=NOK&to=USD,EUR,GBP,CNY,SEK,DKK,JPY,KRW");
+  const res = await fetch("/api/rates");
   const data = await res.json();
   return { NOK:1, ...data.rates };
 }
