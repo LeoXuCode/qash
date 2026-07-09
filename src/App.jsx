@@ -161,7 +161,7 @@ const qStyle = {
 };
 
 const Card = ({children, style={}}) => (
-  <div style={{background:"rgba(255,255,255,0.035)",borderRadius:20,padding:"16px 18px",border:"1px solid rgba(255,255,255,0.06)",...style}}>
+  <div style={{background:"rgba(255,255,255,0.05)",borderRadius:24,padding:"16px 18px",border:"1px solid rgba(255,255,255,0.08)",...style}}>
     {children}
   </div>
 );
@@ -378,7 +378,7 @@ function BatchCard({b, t:tr, onExpand, expanded, onStartSell, sellingId, sellPri
   const isExp = expanded===b.id;
   const isSelling = sellingId===b.id;
   return (
-    <div style={{background:"rgba(255,255,255,0.035)",borderRadius:20,padding:"18px",border:"1px solid rgba(255,255,255,0.06)",marginBottom:10,cursor:"pointer"}}
+    <div style={{background:"rgba(255,255,255,0.05)",borderRadius:24,padding:"18px",border:"1px solid rgba(255,255,255,0.08)",marginBottom:10,cursor:"pointer"}}
       onClick={() => onExpand(b.id)}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
         <div style={{flex:1}}>
@@ -596,7 +596,13 @@ export default function App() {
   for (let i=0;i<6;i++) predYears.push({yr:2026+i, age:age+i, val:annual*Math.pow(1+growth/100,i)});
   const nextMilestone = MILESTONES.find(m => m>annual);
   const mlLabels = MILESTONE_LABELS[lang];
-  const TABS = [tr.home,"Batches",tr.calculator,tr.forecast];
+  const TABS = [
+    {name:tr.home, icon:"🏠"},
+    {name:"Batches", icon:"📦"},
+    {name:tr.calculator, icon:"🧮"},
+    {name:tr.forecast, icon:"📈"},
+    {name:tr.settings, icon:"⚙️"}
+  ];
 
   const TxRow = ({t}) => (
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 0",borderBottom:"1px solid rgba(255,255,255,0.04)"}}>
@@ -621,39 +627,28 @@ export default function App() {
   );
 
   return (
-    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'DM Sans',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden",paddingTop:"env(safe-area-inset-top)"}}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+    <div style={{minHeight:"100vh",background:"#08080c",color:"#ddd",fontFamily:"'Inter',sans-serif",maxWidth:480,margin:"0 auto",width:"100%",overflowX:"hidden",paddingTop:"env(safe-area-inset-top)",paddingBottom:"env(safe-area-inset-bottom)"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
-      <div style={{padding:"24px 20px 16px"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div>
-            <div style={{fontSize:25,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
-            <div style={{fontSize:12,color:"#666",marginTop:3}}>
-              {currentMonth}
-              {ratesLoaded && <span style={{marginLeft:8,fontSize:11,color:"#4ade8066"}}>● live rates</span>}
-            </div>
+      <div style={{padding:"16px 20px",paddingTop:"env(safe-area-inset-top)"}}>
+        <div>
+          <div style={{fontSize:28,fontWeight:700,letterSpacing:-0.5}}><span style={{color:"#4ade80"}}>Q</span>{tr.appTitle.slice(1)}</div>
+          <div style={{fontSize:13,color:"#666",marginTop:2}}>
+            {currentMonth}
+            {ratesLoaded && <span style={{marginLeft:8,fontSize:11,color:"#4ade8066"}}>● live rates</span>}
           </div>
-          <button onClick={() => setTab(4)} style={{background:tab===4?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.06)",border:"none",cursor:"pointer",color:tab===4?"#fff":"#aaa",fontSize:14,fontWeight:600,fontFamily:"inherit",padding:"10px 18px",borderRadius:99,minHeight:44}}>Settings</button>
         </div>
       </div>
 
-      <div style={{display:"flex",padding:"0 20px",gap:4,marginBottom:4}}>
-        {TABS.map((t,i) => (
-          <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"14px 0 16px",background:"none",border:"none",color:tab===i?"#fff":"#555",fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"inherit",borderBottom:tab===i?"2px solid #fff":"2px solid transparent",display:"flex",alignItems:"center",justifyContent:"center",whiteSpace:"nowrap"}}>
-            {t}
-          </button>
-        ))}
-      </div>
-
-      <div style={{padding:"16px 20px 100px"}}>
+      <div style={{padding:"16px 20px 90px"}}>
 
         {tab===0 && (
           <div>
-            <Card style={{marginBottom:14,padding:"24px 20px",position:"relative",overflow:"hidden"}}>
-              <div style={{position:"absolute",top:-40,right:-40,width:120,height:120,background:"radial-gradient(circle,"+(totalNet>=0?"#4ade80":"#f87171")+"22 0%,transparent 70%)",pointerEvents:"none"}}/>
+            <Card style={{marginBottom:14,padding:"28px 22px",position:"relative",overflow:"hidden",background:totalNet>=0?"rgba(74,222,128,0.08)":"rgba(248,113,113,0.08)",border:"1px solid "+(totalNet>=0?"rgba(74,222,128,0.15)":"rgba(248,113,113,0.15)")}}>
+              <div style={{position:"absolute",top:-60,right:-60,width:180,height:180,background:"radial-gradient(circle,"+(totalNet>=0?"#4ade80":"#f87171")+"18 0%,transparent 70%)",pointerEvents:"none",filter:"blur(40px)"}}/>
               <Label>{tr.netMonth}</Label>
-              <div style={{fontSize:40,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totalNet>=0?"#4ade80":"#f87171",lineHeight:1.1}}>
-                {totalNet>=0?"+":""}{fmt(totalNet)} <span style={{fontSize:17,color:"#777"}}>kr</span>
+              <div style={{fontSize:44,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:totalNet>=0?"#4ade80":"#f87171",lineHeight:1.1,position:"relative",zIndex:1}}>
+                {totalNet>=0?"+":""}{fmt(totalNet)} <span style={{fontSize:18,color:totalNet>=0?"#4ade8088":"#f8717188"}}>kr</span>
               </div>
             </Card>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
@@ -945,6 +940,15 @@ export default function App() {
             </Card>
           </div>
         )}
+      </div>
+
+      <div style={{position:"fixed",bottom:0,left:0,right:0,background:"#08080c",borderTop:"1px solid rgba(255,255,255,0.08)",display:"flex",justifyContent:"space-around",alignItems:"center",paddingBottom:"env(safe-area-inset-bottom)",height:"68px",maxWidth:480,margin:"0 auto"}}>
+        {TABS.map((t,i) => (
+          <button key={i} onClick={() => setTab(i)} style={{flex:1,padding:"12px 0",background:"none",border:"none",color:tab===i?"#4ade80":"#666",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:4}}>
+            <span style={{fontSize:24}}>{t.icon}</span>
+            <span style={{fontSize:11}}>{typeof t === 'string' ? t : t.name}</span>
+          </button>
+        ))}
       </div>
     </div>
   );
