@@ -680,9 +680,9 @@ export default function App() {
             </Card>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:14}}>
               {[{l:tr.batchProfit,v:monthBatchProfit,c:"#4ade80"},{l:tr.otherIncome,v:monthIncome,c:"#60a5fa"},{l:tr.expenses,v:monthExpense,c:"#f87171"}].map(x => (
-                <Card key={x.l} style={{padding:"16px 13px"}}>
-                  <div style={{fontSize:10.5,color:"#666",textTransform:"uppercase",letterSpacing:1,marginBottom:7}}>{x.l}</div>
-                  <div style={{fontSize:17,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:x.c}}>{fmtK(x.v)}</div>
+                <Card key={x.l} style={{padding:"16px 13px",display:"flex",flexDirection:"column",height:"100%"}}>
+                  <div style={{fontSize:9.5,color:"#666",textTransform:"uppercase",letterSpacing:1,marginBottom:8,minHeight:16,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{x.l}</div>
+                  <div style={{fontSize:17,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:x.c,marginTop:"auto"}}>{fmtK(x.v)}</div>
                 </Card>
               ))}
             </div>
